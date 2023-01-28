@@ -60,11 +60,11 @@
   "project": {
     "version": "1.0.0",
     "restore": {
-      "projectUniqueName": "E:\\WORK\\TabweebAPI\\Tabweeb_Model\\Tabweeb_Model.csproj",
+      "projectUniqueName": "E:\\WORK\\2023\\TabweebAPI\\Tabweeb_Model\\Tabweeb_Model.csproj",
       "projectName": "Tabweeb_Model",
-      "projectPath": "E:\\WORK\\TabweebAPI\\Tabweeb_Model\\Tabweeb_Model.csproj",
+      "projectPath": "E:\\WORK\\2023\\TabweebAPI\\Tabweeb_Model\\Tabweeb_Model.csproj",
       "packagesPath": "C:\\Users\\Admin\\.nuget\\packages\\",
-      "outputPath": "E:\\WORK\\TabweebAPI\\Tabweeb_Model\\obj\\",
+      "outputPath": "E:\\WORK\\2023\\TabweebAPI\\Tabweeb_Model\\obj\\",
       "projectStyle": "PackageReference",
       "configFilePaths": [
         "C:\\Users\\Admin\\AppData\\Roaming\\NuGet\\NuGet.Config",

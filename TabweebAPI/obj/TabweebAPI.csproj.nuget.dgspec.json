@@ -1,17 +1,17 @@
 {
   "format": 1,
   "restore": {
-    "E:\\WORK\\TabweebAPI\\TabweebAPI\\TabweebAPI.csproj": {}
+    "E:\\WORK\\2023\\TabweebAPI\\TabweebAPI\\TabweebAPI.csproj": {}
   },
   "projects": {
-    "E:\\WORK\\TabweebAPI\\TabweebAPI\\TabweebAPI.csproj": {
+    "E:\\WORK\\2023\\TabweebAPI\\TabweebAPI\\TabweebAPI.csproj": {
       "version": "1.0.0",
       "restore": {
-        "projectUniqueName": "E:\\WORK\\TabweebAPI\\TabweebAPI\\TabweebAPI.csproj",
+        "projectUniqueName": "E:\\WORK\\2023\\TabweebAPI\\TabweebAPI\\TabweebAPI.csproj",
         "projectName": "TabweebAPI",
-        "projectPath": "E:\\WORK\\TabweebAPI\\TabweebAPI\\TabweebAPI.csproj",
+        "projectPath": "E:\\WORK\\2023\\TabweebAPI\\TabweebAPI\\TabweebAPI.csproj",
         "packagesPath": "C:\\Users\\Admin\\.nuget\\packages\\",
-        "outputPath": "E:\\WORK\\TabweebAPI\\TabweebAPI\\obj\\",
+        "outputPath": "E:\\WORK\\2023\\TabweebAPI\\TabweebAPI\\obj\\",
         "projectStyle": "PackageReference",
         "configFilePaths": [
           "C:\\Users\\Admin\\AppData\\Roaming\\NuGet\\NuGet.Config",
