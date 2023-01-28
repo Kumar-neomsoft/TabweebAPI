@@ -15,7 +15,7 @@ using TabweebAPI.Common;
 using Microsoft.AspNetCore.Mvc.RazorPages;
 using Microsoft.Extensions.Logging;
 using TabweebAPI.DBHelper;
-
+using NLog;
 namespace TabweebAPI.Controllers
 {
     [Route("api/[controller]")]
@@ -27,7 +27,7 @@ namespace TabweebAPI.Controllers
         private readonly CommonRepository _commonRepository;
         private readonly CommonController _commonController;
         private readonly string PageName = "MasterData";
-
+        private Logger _logger = LogManager.GetCurrentClassLogger();
         #endregion
 
         #region "Constructor"
@@ -50,6 +50,7 @@ namespace TabweebAPI.Controllers
             }
             catch (Exception ex)
             {
+                _logger.Error($"Error occured inside GetLangList Action: {ex.Message}");
                 return StatusCode(500, "Internal server error");
             }
 
@@ -66,6 +67,7 @@ namespace TabweebAPI.Controllers
             }
             catch (Exception ex)
             {
+                _logger.Error($"Error occured inside GetAccountingYear Action: {ex.Message}");
                 return StatusCode(500, "Internal server error");
             }
 
@@ -82,6 +84,7 @@ namespace TabweebAPI.Controllers
             }
             catch (Exception ex)
             {
+                _logger.Error($"Error occured inside GetCompany Action: {ex.Message}");
                 return StatusCode(500, "Internal server error");
             }
 
@@ -102,6 +105,7 @@ namespace TabweebAPI.Controllers
             }
             catch (Exception ex)
             {
+                _logger.Error($"Error occured inside GetBranchById Action: {ex.Message}");
                 return StatusCode(500, "Internal server error");
             }
         }
@@ -116,6 +120,7 @@ namespace TabweebAPI.Controllers
             }
             catch (Exception ex)
             {
+                _logger.Error($"Error occured inside GetBranch Action: {ex.Message}");
                 return StatusCode(500, "Internal server error");
             }
         }

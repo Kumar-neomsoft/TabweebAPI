@@ -15,6 +15,7 @@ using TabweebAPI.Common;
 using Microsoft.AspNetCore.Mvc.RazorPages;
 using Microsoft.Extensions.Logging;
 using TabweebAPI.Middleware;
+using NLog;
 
 namespace TabweebAPI.Controllers
 {
@@ -28,6 +29,7 @@ namespace TabweebAPI.Controllers
         private readonly CommonController _commonController;
         private readonly string PageName = "Login";
         private readonly JwtMiddleware _jwtmiddleware;
+        private Logger _logger = LogManager.GetCurrentClassLogger();
         #endregion
 
         #region "Constructor"
@@ -48,13 +50,12 @@ namespace TabweebAPI.Controllers
                 loginResponse = await _jwtmiddleware.AuthenticateUser(LoginReq);
                 MethodResult<List<LoginResponse>> responseObject = new MethodResult<List<LoginResponse>>();
                 responseObject.ResultObject = loginResponse;
-                //Get the result from repository
-                //var Result = await _loginRepository.AuthenticateUser(LoginReq);
                 return _commonController.ProcessGetResponse<LoginResponse>(responseObject.ResultObject.ToList(), PageName, CRUDAction.Select);
               
             }
             catch (Exception ex)
             {
+                _logger.Error($"Error occured inside AuthenticateUser Action: {ex.Message}");
                 return StatusCode(500, "Internal server error");
             }
            

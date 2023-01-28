@@ -32,11 +32,13 @@ namespace TabweebAPI.Middleware
 {
     public class JwtMiddleware 
     {
+        #region "Declarations"
         private readonly ILoginRepository _loginRepository;
         private readonly CommonController _commonController;
         private string _Secretkey = string.Empty;
         private string _issuer = string.Empty;
         private string _audience = string.Empty;
+        #endregion
         #region "Constructor"
         public JwtMiddleware(IConfiguration iconfig)
         {
@@ -65,7 +67,7 @@ namespace TabweebAPI.Middleware
             List<LoginResponse> loginResponse = new List<LoginResponse>();
             loginResponse =  _loginRepository.ValidateUser(LoginReq);
             
-            if (loginResponse == null && loginResponse.Count == 0)
+            if (loginResponse == null )
             {
                 return loginResponse;
             }
@@ -93,8 +95,6 @@ namespace TabweebAPI.Middleware
                 loginResponse[0].Token = Convert.ToString(token);
                 long UPresult = 0;
                 UPresult =  _loginRepository.UpdateLoginSession(UserID, token);
-                //Result.ResultObject = loginResponse;
-                //return _commonController.ProcessGetResponse<LoginResponse>(Result.ResultObject.ToList(), "Login", CRUDAction.Select);
                 return loginResponse;
             }
             else
@@ -130,18 +130,11 @@ namespace TabweebAPI.Middleware
             {
                 vAccessToken = token.Remove(0, 7);
             }
-
-           
             SessionResponse sessionResponse = new SessionResponse();
             var handler = new JwtSecurityTokenHandler();
             var tokenS = handler.ReadToken(vAccessToken) as JwtSecurityToken;
-
-
             var userId = tokenS.Claims.First(claim => claim.Type == "USER_ID").Value;
-
-
             int U_id = Convert.ToInt32(userId);
-
             sessionResponse = _loginRepository.SessionResponse(U_id);
             var sessiondatetime = Convert.ToDateTime(sessionResponse.SessionTimeOut).AddHours(8);
             if (vAccessToken != null && vAccessToken == sessionResponse.Token && sessiondatetime >= DateTime.Now)

@@ -15,19 +15,27 @@ using System.Text.Json;
 using TabweebAPI.IRepository;
 using TabweebAPI.DBHelper;
 using System.Text.Json.Serialization;
+using NLog;
+
 namespace TabweebAPI.Repository
 {
     public class MasterRepository : IMasterRepository
     {
+        #region "Declarations"
         private readonly CommonRepository _commonRepository;
         private readonly IConfiguration _config;
         private string _dbconn = string.Empty;
+        private static Logger _logger = LogManager.GetCurrentClassLogger();
+        #endregion
+
+        #region "Constructor"
         public MasterRepository(IConfiguration config)
         {
             _config = config;
             _commonRepository = new CommonRepository();
             _dbconn = new ConfigurationBuilder().AddJsonFile("appsettings.json").Build().GetSection("ConnectionStrings")["DBSysConnection"];
         }
+        #endregion
         public async Task<MethodResult<List<Language>>> GetLangList()
         {
             MethodResult<List<Language>> responseObject = new MethodResult<List<Language>>();
@@ -46,6 +54,9 @@ namespace TabweebAPI.Repository
             }
             catch (Exception ex)
             {
+                _logger.Error("Exception message " + ex.Message);
+                _logger.Error("InnerException message " + ex.InnerException);
+                await _commonRepository.InsertUpdateErrorLog<List<saveStatus>>(ex, System.Reflection.MethodBase.GetCurrentMethod().DeclaringType.FullName);
             }
             return responseObject;
         }
@@ -67,6 +78,9 @@ namespace TabweebAPI.Repository
             }
             catch (Exception ex)
             {
+                _logger.Error("Exception message " + ex.Message);
+                _logger.Error("InnerException message " + ex.InnerException);
+                await _commonRepository.InsertUpdateErrorLog<List<saveStatus>>(ex, System.Reflection.MethodBase.GetCurrentMethod().DeclaringType.FullName);
             }
             return responseObject;
         }
@@ -89,13 +103,16 @@ namespace TabweebAPI.Repository
             }
             catch (Exception ex)
             {
+                _logger.Error("Exception message " + ex.Message);
+                _logger.Error("InnerException message " + ex.InnerException);
+                await _commonRepository.InsertUpdateErrorLog<List<saveStatus>>(ex, System.Reflection.MethodBase.GetCurrentMethod().DeclaringType.FullName);
             }
             return responseObject;
         }
         public async Task<MethodResult<List<BranchRes>>> GetBranch()
         {
             MethodResult<List<BranchRes>> responseObject = new MethodResult<List<BranchRes>>();
-            List<BranchRes> accresponseObject = new List<BranchRes>();
+            List<BranchRes> BrresponseObject = new List<BranchRes>();
             try
             {
                 var Result = "";
@@ -105,11 +122,15 @@ namespace TabweebAPI.Repository
                 dbParam.Add(new DbParameter("Mode", "SelectBranch", DbType.String));
                 dt = await _commonRepository.ExecuteDataTable(sqlStr, CommandType.StoredProcedure, dbParam);
                 Result = JsonConvert.SerializeObject(dt, Formatting.Indented);
-                accresponseObject = JsonConvert.DeserializeObject<List<BranchRes>>(Result);
-                responseObject.ResultObject = accresponseObject;
+                BrresponseObject = JsonConvert.DeserializeObject<List<BranchRes>>(Result);
+                responseObject.ResultObject = BrresponseObject;
+                return responseObject;
             }
             catch (Exception ex)
             {
+                _logger.Error("Exception message " + ex.Message);
+                _logger.Error("InnerException message " + ex.InnerException);
+                await _commonRepository.InsertUpdateErrorLog<List<saveStatus>>(ex, System.Reflection.MethodBase.GetCurrentMethod().DeclaringType.FullName);
             }
             return responseObject;
         }
@@ -131,6 +152,9 @@ namespace TabweebAPI.Repository
             }
             catch (Exception ex)
             {
+                _logger.Error("Exception message " + ex.Message);
+                _logger.Error("InnerException message " + ex.InnerException);
+                await _commonRepository.InsertUpdateErrorLog<List<saveStatus>>(ex, System.Reflection.MethodBase.GetCurrentMethod().DeclaringType.FullName);
             }
             return responseObject;
         }

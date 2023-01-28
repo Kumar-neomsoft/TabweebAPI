@@ -13,20 +13,19 @@ using Newtonsoft.Json.Linq;
 //using System.Data.Common;
 using System.Reflection;
 using TabweebAPI.DBHelper;
-
 using Microsoft.Extensions.Configuration;
-
 using Microsoft.AspNetCore.Mvc;
+using Microsoft.Data.SqlClient;
 
 namespace TabweebAPI.Common
 {
     public class CommonRepository
     {
-
+        #region "Declarations"
         public static string connStr;
         public static string systemconnStr;
         private string providerName= "System.Data.SqlClient";
-
+        #endregion
         public CommonRepository()
         {
             connStr = GetConnectionString();
@@ -43,7 +42,7 @@ namespace TabweebAPI.Common
             return Startup.SysConnectionString;
             
         }
-        
+       
         public async Task<DataTable> ExecuteDataTable(string query, CommandType cmdType, List<DbParameter> parameterlist = null)
         {
             try
@@ -75,7 +74,61 @@ namespace TabweebAPI.Common
 
             }
         }
-     
+
+        public async Task<string> InsertUpdateErrorLog<T>(Exception exception, string location)
+        {
+
+            var ErrorValue = string.Empty;
+            ErrorLog errorlog = new ErrorLog();
+            errorlog.UserName = "Data Access Layer";
+            errorlog.DateTime = DateTime.Now.ToString("yyyy-MM-dd HH:mm:ss");
+            errorlog.ErrorLocation = "Referer:" + location + "|Stack Trace:" + exception.ToString();
+            errorlog.ErrorType = exception.Message;
+            errorlog.ErrorDescription = exception.StackTrace;
+            var results =  InsertUpdateErrorLog(errorlog);
+
+            SqlException SqlExcep = default(SqlException);
+            SqlExcep = (SqlException)exception;
+            if ((SqlExcep != null))
+            {
+                List<sqlError> SqlErrorList = new List<sqlError>()
+                {
+                    new sqlError() { ErrorNumber = "42883", ErrorValue = "Undefined Function" } ,//42883- No Procedure Matches
+                    //new sqlError() { ErrorNumber = 2601, ErrorValue = "DUPLICATE" } ,
+                    new sqlError() { ErrorNumber = "23503", ErrorValue = "Foreign Violation" },//23503-Foreign Violation
+                    new sqlError() { ErrorNumber = "23505", ErrorValue = "Unique Violation" }  //23505-unique_violation
+                };
+                ErrorValue = SqlErrorList.Where(a => a.ErrorNumber == SqlExcep.SqlState).Select(b => b.ErrorValue).FirstOrDefault();
+                return ErrorValue;
+            }
+
+            return ErrorValue;
+        }
+        public  string InsertUpdateErrorLog(ErrorLog errorlog)
+        {
+            try
+            {
+                string sqlstr = "sp_ErrorLog";
+                List<DbParameter> dbParam = new List<DbParameter>();
+                if((String)errorlog.Id.ToString() == null || (String)errorlog.Id.ToString() == "")
+                    dbParam.Add(new DbParameter("Mode", "Insert", DbType.String));
+                else
+                    dbParam.Add(new DbParameter("Mode", "Update", DbType.String));
+                dbParam.Add(new DbParameter("Id", (Int32?) errorlog.Id, DbType.Int32));
+                dbParam.Add(new DbParameter("UserName", (String)errorlog.UserName, DbType.String, 50));
+                dbParam.Add(new DbParameter("DateTime", (String)errorlog.DateTime, DbType.DateTime));
+                dbParam.Add(new DbParameter("ErrorLocation", (String)errorlog.ErrorLocation, DbType.String, 100));
+                dbParam.Add(new DbParameter("ErrorType", (String)errorlog.ErrorType, DbType.String));
+                dbParam.Add(new DbParameter("ErrorDescription", (String)errorlog.ErrorDescription, DbType.String));
+                DbHelper.ExecuteNonQuery(connStr, sqlstr, CommandType.StoredProcedure, dbParam);
+                return "";
+            }
+            catch (Exception ex)
+            {
+                throw ex;
+            }
+
+        }
         public string Encrypt(string clearText)
         {
             string EncryptionKey = "MAKMNIV2SPBNIMNI992MNI12MNI";
