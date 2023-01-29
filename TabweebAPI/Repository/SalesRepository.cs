@@ -151,8 +151,8 @@ namespace TabweebAPI.Repository
                 dbParam.Add(new DbParameter("SAL_MAN", (Int32?)obj["SAL_MAN"], DbType.Int32));
                 dbParam.Add(new DbParameter("DUE_DATE", (DateTime?)obj["DUE_DATE"], DbType.DateTime));
                 dbParam.Add(new DbParameter("CC_CODE", (String?)obj["CC_CODE"], DbType.String));
-                object MaxStockID1 = await _commonRepository.ExecuteScalar(sqlStr, CommandType.StoredProcedure, dbParam);
-                Guid Invoice_Guid = (Guid)MaxStockID1;
+                object InvoiceGuid = await _commonRepository.ExecuteScalar(sqlStr, CommandType.StoredProcedure, dbParam);
+                Guid Invoice_Guid = (Guid)InvoiceGuid;
                 int ReturnVal= InsertItemDetail(Invoice_Guid, InvItemData);
                 ObjRes.ResultObject = await _commonRepository.GetValue<saveStatus>(ReturnVal);
                 
