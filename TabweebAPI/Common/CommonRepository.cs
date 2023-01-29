@@ -58,7 +58,48 @@ namespace TabweebAPI.Common
                
             }
         }
+        public async Task<DataSet> ExecuteDataSet(string query, CommandType cmdType, List<DbParameter> parameterlist = null)
+        {
+            try
+            {
 
+                DataSet ds = new DataSet();
+                ds = DbHelper.ExecuteDataSet(connStr, query, CommandType.StoredProcedure, parameterlist);
+                return ds;
+            }
+            catch (Exception ex)
+            {
+                throw ex;
+
+            }
+        }
+
+        public async Task<object> ExecuteScalar(string query, CommandType cmdType, List<DbParameter> parameterlist = null)
+        {
+            try
+            {
+                return DbHelper.ExecuteScalar(connStr, query, CommandType.StoredProcedure, parameterlist);
+            }
+            catch (Exception ex)
+            {
+                throw ex;
+
+            }
+
+        }
+        public async Task<T> GetValue<T>(object Result)
+        {
+            try
+            {
+                    T output =  (T)Enum.ToObject(typeof(T),Result);
+                    return output;
+            }
+            catch (Exception ex)
+            {
+                throw ex;
+            }
+
+        }
         public async Task<DataTable> ExecuteDataTable(string conn, string query, CommandType cmdType, List<DbParameter> parameterlist = null)
         {
             try
@@ -110,7 +151,7 @@ namespace TabweebAPI.Common
             {
                 string sqlstr = "sp_ErrorLog";
                 List<DbParameter> dbParam = new List<DbParameter>();
-                if((String)errorlog.Id.ToString() == null || (String)errorlog.Id.ToString() == "")
+                if((String)errorlog.Id.ToString() == null || (String)errorlog.Id.ToString() == "" || (String)errorlog.Id.ToString() == "0")
                     dbParam.Add(new DbParameter("Mode", "Insert", DbType.String));
                 else
                     dbParam.Add(new DbParameter("Mode", "Update", DbType.String));

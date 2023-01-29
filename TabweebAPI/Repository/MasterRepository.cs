@@ -38,7 +38,7 @@ namespace TabweebAPI.Repository
         #endregion
         public async Task<MethodResult<List<Language>>> GetLangList()
         {
-            MethodResult<List<Language>> responseObject = new MethodResult<List<Language>>();
+            MethodResult<List<Language>> ObjRes = new MethodResult<List<Language>>();
             List<Language> lanresponseObject = new List<Language>();
             try
             {
@@ -50,7 +50,7 @@ namespace TabweebAPI.Repository
                 dt = await _commonRepository.ExecuteDataTable(_dbconn, sqlStr, CommandType.StoredProcedure, dbParam);
                 Result = JsonConvert.SerializeObject(dt, Formatting.Indented);
                 lanresponseObject = JsonConvert.DeserializeObject<List<Language>>(Result);
-                responseObject.ResultObject = lanresponseObject;
+                ObjRes.ResultObject = lanresponseObject;
             }
             catch (Exception ex)
             {
@@ -58,11 +58,11 @@ namespace TabweebAPI.Repository
                 _logger.Error("InnerException message " + ex.InnerException);
                 await _commonRepository.InsertUpdateErrorLog<List<saveStatus>>(ex, System.Reflection.MethodBase.GetCurrentMethod().DeclaringType.FullName);
             }
-            return responseObject;
+            return ObjRes;
         }
         public async Task<MethodResult<List<Company>>> GetCompany()
         {
-            MethodResult<List<Company>> responseObject = new MethodResult<List<Company>>();
+            MethodResult<List<Company>> ObjRes = new MethodResult<List<Company>>();
             List<Company> accresponseObject = new List<Company>();
             try
             {
@@ -74,7 +74,7 @@ namespace TabweebAPI.Repository
                 dt = await _commonRepository.ExecuteDataTable( sqlStr, CommandType.StoredProcedure, dbParam);
                 Result = JsonConvert.SerializeObject(dt, Formatting.Indented);
                 accresponseObject = JsonConvert.DeserializeObject<List<Company>>(Result);
-                responseObject.ResultObject = accresponseObject;
+                ObjRes.ResultObject = accresponseObject;
             }
             catch (Exception ex)
             {
@@ -82,7 +82,7 @@ namespace TabweebAPI.Repository
                 _logger.Error("InnerException message " + ex.InnerException);
                 await _commonRepository.InsertUpdateErrorLog<List<saveStatus>>(ex, System.Reflection.MethodBase.GetCurrentMethod().DeclaringType.FullName);
             }
-            return responseObject;
+            return ObjRes;
         }
         public async Task<MethodResult<List<BranchRes>>> GetBranchById(int CompanyId)
         {
@@ -136,7 +136,7 @@ namespace TabweebAPI.Repository
         }
         public async Task<MethodResult<List<AccountingYear>>> GetAccountingYear()
         {
-            MethodResult<List<AccountingYear>> responseObject = new MethodResult<List<AccountingYear>>();
+            MethodResult<List<AccountingYear>> ObjRes = new MethodResult<List<AccountingYear>>();
             List<AccountingYear> accresponseObject = new List<AccountingYear>();
             try
             {
@@ -148,7 +148,7 @@ namespace TabweebAPI.Repository
                 dt = await _commonRepository.ExecuteDataTable(_dbconn, sqlStr, CommandType.StoredProcedure, dbParam);
                 Result = JsonConvert.SerializeObject(dt, Formatting.Indented);
                 accresponseObject = JsonConvert.DeserializeObject<List<AccountingYear>>(Result);
-                responseObject.ResultObject = accresponseObject;
+                ObjRes.ResultObject = accresponseObject;
             }
             catch (Exception ex)
             {
@@ -156,7 +156,7 @@ namespace TabweebAPI.Repository
                 _logger.Error("InnerException message " + ex.InnerException);
                 await _commonRepository.InsertUpdateErrorLog<List<saveStatus>>(ex, System.Reflection.MethodBase.GetCurrentMethod().DeclaringType.FullName);
             }
-            return responseObject;
+            return ObjRes;
         }
     }
 }

@@ -15,7 +15,7 @@ namespace TabweebAPI.DBHelper
         int ExecuteNonQuery(string conn, string query, CommandType cmdType, List<DbParameter> parameterlist);
 
         object ExecuteScalar(string query, CommandType cmdType, List<DbParameter> parameterlist);
-
+        object ExecuteScalar(string conn, string query, CommandType cmdType, List<DbParameter> parameterlist);
         IDataReader ExecuteReader(string query, CommandType cmdType, List<DbParameter> parameterlist);
 
         IDbConn GetDBConnection();

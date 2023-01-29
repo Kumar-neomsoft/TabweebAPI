@@ -143,7 +143,39 @@ namespace TabweebAPI.DBHelper
             }
             return result;
         }
+        [System.Diagnostics.CodeAnalysis.SuppressMessage("Microsoft.Security", "CA2100:Review SQL queries for security vulnerabilities")]
+        public object ExecuteScalar(string connstring,string query, CommandType cmdType, List<DbParameter> parameterlist = null)
+        {
 
+            object result = null;
+
+            using (var conn = new T())
+            {
+                using (var cmd = conn.CreateCommand())
+                {
+                    if (parameterlist != null && parameterlist.Count > 0)
+                    {
+                        cmd.Parameterize(parameterlist);
+                    }
+
+                    //Assiging Query to native implementor to change as per database requirement.
+                    conn.QueryText = query;
+
+                    //Assigning Query Text According to Database Type
+                    cmd.CommandText = conn.QueryText;
+
+                    cmd.CommandType = cmdType;
+
+                    //To handle stored procedure 
+                    //ProviderCustomization(cmd);
+
+                    cmd.Connection.ConnectionString = connstring;
+                    cmd.Connection.Open();
+                    result = cmd.ExecuteScalar();
+                }
+            }
+            return result;
+        }
         [System.Diagnostics.CodeAnalysis.SuppressMessage("Microsoft.Security", "CA2100:Review SQL queries for security vulnerabilities")]
         public object ExecuteScalar(IDbConn baDBConnection, string query, CommandType cmdType, List<DbParameter> parameterlist = null)
         {

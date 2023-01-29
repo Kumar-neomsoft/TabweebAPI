@@ -16,7 +16,8 @@ using Microsoft.AspNetCore.Mvc.RazorPages;
 using Microsoft.Extensions.Logging;
 using TabweebAPI.Middleware;
 using NLog;
-using Tabweeb_Model.Sales;
+using System.Collections;
+
 
 namespace TabweebAPI.Controllers
 {
@@ -42,41 +43,7 @@ namespace TabweebAPI.Controllers
             _jwtmiddleware = new JwtMiddleware(iconfig);
         }
         #endregion
-        [HttpGet("GetCurrencyDetails")]
-        public async Task<IActionResult> GetCurrencyDetails()
-        {
-            try
-            {
-                //Get the result from repository
-                var Result = await _salesRepository.GetCurrencyDetails();
-
-                return _commonController.ProcessGetResponse<Currency>(Result.ResultObject.ToList(), PageName, CRUDAction.Select);
-            }
-            catch (Exception ex)
-            {
-                _logger.Error($"Error occured inside GetLangList Action: {ex.Message}");
-                return StatusCode(500, "Internal server error");
-            }
-
-        }
-
-        [HttpGet("GetWareHouseDetails")]
-        public async Task<IActionResult> GetWareHouseDetails()
-        {
-            try
-            {
-                //Get the result from repository
-                var Result = await _salesRepository.GetWareHouseDetails();
-
-                return _commonController.ProcessGetResponse<WareHouse>(Result.ResultObject.ToList(), PageName, CRUDAction.Select);
-            }
-            catch (Exception ex)
-            {
-                _logger.Error($"Error occured inside GetWareHouseDetails Action: {ex.Message}");
-                return StatusCode(500, "Internal server error");
-            }
-
-        }
+            
 
         [HttpGet("GetBillType")]
         public async Task<IActionResult> GetBillType(int LangNo, int DocType)
@@ -90,10 +57,66 @@ namespace TabweebAPI.Controllers
             }
             catch (Exception ex)
             {
-                _logger.Error($"Error occured inside GetWareHouseDetails Action: {ex.Message}");
+                _logger.Error($"Error occured inside GetBillType Action: {ex.Message}");
                 return StatusCode(500, "Internal server error");
             }
 
+        }
+
+        [HttpGet("GetCCode")]
+        public async Task<IActionResult> GetCCode(int BranchNo)
+        {
+            try
+            {
+                //Get the result from repository
+                var Result = await _salesRepository.GetCCode(BranchNo);
+
+                return _commonController.ProcessGetResponse<CCodeRes>(Result.ResultObject.ToList(), PageName, CRUDAction.Select);
+            }
+            catch (Exception ex)
+            {
+                _logger.Error($"Error occured inside GetCCode Action: {ex.Message}");
+                return StatusCode(500, "Internal server error");
+            }
+
+        }
+        [HttpGet("EditInvoice")]
+        public async Task<IActionResult> EditInvoice(Guid BILL_GUID)
+        {
+            try
+            {
+
+                var Result = await _salesRepository.EditInvoice(BILL_GUID);
+
+                return _commonController.ProcessGetResponse<InvoiceDetails>(Result.ResultObject.ToList(), PageName, CRUDAction.Select);
+            }
+            catch (Exception ex)
+            {
+                _logger.Error($"Error occured inside EditInvoice Action: {ex.Message}");
+                return StatusCode(500, "Internal server error");
+            }
+        }
+
+        [HttpPost("InsertInvoice")]
+        public async Task<IActionResult> InsertInvoice(InvoiceDetails invDetails)
+        {
+            try
+            {
+                if (invDetails == null)
+                    return BadRequest("Invoice Details is null");
+                if (invDetails.InvoiceItemList.Count == 0)
+                    return BadRequest("Invoice Item Details is null");
+
+                string JsonInvData = JsonConvert.SerializeObject(invDetails);
+                string jsonInvItemData = JsonConvert.SerializeObject(invDetails.InvoiceItemList);
+                var Result = await _salesRepository.InsertInvoice(JsonInvData, jsonInvItemData);
+                return  _commonController.ProcessResponse <saveStatus > (Result.ResultObject, "Invoice", CRUDAction.Insert);
+            }
+            catch (Exception ex)
+            {
+                _logger.Error($"Error occured inside InsertInvoice Action: {ex.Message}");
+                return StatusCode(500, "Internal server error");
+            }
         }
     }
 }

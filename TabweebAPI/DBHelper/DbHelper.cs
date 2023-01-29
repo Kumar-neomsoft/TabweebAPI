@@ -255,7 +255,10 @@ namespace TabweebAPI.DBHelper
         {
             return db.ExecuteScalar(query, cmdType, parameterlist);
         }
-
+        public static object ExecuteScalar(string conn, string query, CommandType cmdType, List<DbParameter> parameterlist = null)
+        {
+            return db.ExecuteScalar(conn,query, cmdType, parameterlist);
+        }
         /// <summary>
         /// Execute Scalar using shared connection
         /// </summary>

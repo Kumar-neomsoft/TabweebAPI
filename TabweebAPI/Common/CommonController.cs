@@ -52,7 +52,72 @@ namespace TabweebAPI.Common
                 throw ex;
             }
         }
+        [NonAction]
+        public IActionResult ProcessResponse<T>(saveStatus result, string labelName, CRUDAction operationCURD)
+        {
+            try
+            {
+                ResponseObject<T> objCommonResponseBO = new ResponseObject<T>();
+                //if (operationCURD == CRUDAction.Insert)
+                //{
+                var Value = SaveStatusList.Where(a => a.ErrorID == (int)result).FirstOrDefault();
+                if (Value != null)
+                {
+                   
+                    /****************************Response Messages *********************************/
+                    if ((int)saveStatus.success == Value.ErrorID && operationCURD == CRUDAction.CommonInsert)
+                    {
+                        objCommonResponseBO.Response = new CommonResponse<T>() { Message = labelName + " Created Successfully", Success = true };
+                        return Ok(objCommonResponseBO);
+                    }
+                  
+                    /****************************Response Messages - End*********************************/
+                    else if ((int)saveStatus.success == Value.ErrorID && operationCURD == CRUDAction.Insert)
+                    {
+                        objCommonResponseBO.Response = new CommonResponse<T>() { Message = labelName + " Created Successfully", Success = true };
+                        return Ok(objCommonResponseBO);
+                    }
+                    else if ((int)saveStatus.success == Value.ErrorID && operationCURD == CRUDAction.LoggedOut)
+                    {
+                        objCommonResponseBO.Response = new CommonResponse<T>() { Message = labelName + " Logged Out Successfully", Success = true };
+                        return Ok(objCommonResponseBO);
+                    }
+                    else if ((int)saveStatus.success == Value.ErrorID && operationCURD == CRUDAction.Update)
+                    {
+                        objCommonResponseBO.Response = new CommonResponse<T>() { Message = labelName + " Updated Successfully", Success = true };
+                        return Ok(objCommonResponseBO);
+                    }
+              
+                    else if ((int)saveStatus.success == Value.ErrorID && operationCURD == CRUDAction.Rejected)
+                    {
+                        objCommonResponseBO.Response = new CommonResponse<T>() { Message = labelName + " Rejected Successfully", Success = true };
+                        return Ok(objCommonResponseBO);
+                    }
+                    else if ((int)saveStatus.success == Value.ErrorID && operationCURD == CRUDAction.Delete)
+                    {
+                        objCommonResponseBO.Response = new CommonResponse<T>() { Message = labelName + " Deleted Successfully", Success = true };
+                        return Ok(objCommonResponseBO);
+                    }
+                  
+                    else
+                    {
+                        objCommonResponseBO.Response = new CommonResponse<T>() { Message = "Error Occured", Success = false };
+                        return BadRequest(objCommonResponseBO);
+                    }
 
+                }
+                else
+                {
+                    objCommonResponseBO.Response = new CommonResponse<T>() { Message = "Falied", Success = false };
+                    return BadRequest(objCommonResponseBO);
+                }
+              
+            }
+            catch (Exception ex)
+            {
+                throw ex;
+            }
+        }
     }
     public class ResponseObject<T>
     {
