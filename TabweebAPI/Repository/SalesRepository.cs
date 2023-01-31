@@ -37,7 +37,7 @@ namespace TabweebAPI.Repository
             _dbconn = new ConfigurationBuilder().AddJsonFile("appsettings.json").Build().GetSection("ConnectionStrings")["DBConnection"];
         }
         #endregion
- 
+        
         public async Task<MethodResult<List<BillType>>> GetBillType(int LangId, int DocType)
         {
             MethodResult<List<BillType>> ObjRes = new MethodResult<List<BillType>>();
@@ -225,8 +225,33 @@ namespace TabweebAPI.Repository
             }
 
         }
-        
 
+        public async Task<MethodResult<List<BillSource>>> GetBillSource(int LangId)
+        {
+            MethodResult<List<BillSource>> ObjRes = new MethodResult<List<BillSource>>();
+            List<BillSource> BSresponseObject = new List<BillSource>();
+            try
+            {
+                var Result = "";
+                DataTable dt = new DataTable();
+                string sqlStr = "sp_GetMastersNS";
+                List<DbParameter> dbParam = new List<DbParameter>();
+                dbParam.Add(new DbParameter("Mode", "GetBillSource", DbType.String));
+                dbParam.Add(new DbParameter("LangId", LangId, DbType.Int32));
+                dt = await _commonRepository.ExecuteDataTable(sqlStr, CommandType.StoredProcedure, dbParam);
+                Result = JsonConvert.SerializeObject(dt, Formatting.Indented);
+                BSresponseObject = JsonConvert.DeserializeObject<List<BillSource>>(Result);
+                ObjRes.ResultObject = BSresponseObject;
+                return ObjRes;
+            }
+            catch (Exception ex)
+            {
+                _logger.Error("Exception message " + ex.Message);
+                _logger.Error("InnerException message " + ex.InnerException);
+                await _commonRepository.InsertUpdateErrorLog<List<saveStatus>>(ex, System.Reflection.MethodBase.GetCurrentMethod().DeclaringType.FullName);
+            }
+            return ObjRes;
+        }
         public async Task<MethodResult<List<InvoiceDetails>>> EditInvoice(Guid BILL_GUID)
         {
             MethodResult<List<InvoiceDetails>> ObjInvRes = new MethodResult<List<InvoiceDetails>>();

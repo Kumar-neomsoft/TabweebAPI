@@ -105,7 +105,7 @@ namespace TabweebAPI.Middleware
 
             throw new NotImplementedException();
         }
-        public string CheckSessionValid(List<KeyValuePair<string, StringValues>> name, string DBConnStr)
+        public string ValidateJWTToken(List<KeyValuePair<string, StringValues>> name)
         {
             string vAccessToken = "";
             String token = "";
@@ -119,10 +119,10 @@ namespace TabweebAPI.Middleware
               
             }
 
-            if (token == "No Token")
+            if (token == "No Token" || token =="")
             {
-                throw new HttpException(401, "Unauthorized access");
-                return "401";
+                //throw new HttpException(401, "Unauthorized access");
+                return "unauthorized";
             }
 
             int index1 = token.IndexOf("Bearer ");

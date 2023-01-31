@@ -46,6 +46,10 @@ namespace TabweebAPI.Controllers
         {
             try
             {
+                if (!ModelState.IsValid)
+                {
+                    return BadRequest("Parameter is missing");
+                }
                 List<LoginResponse> loginResponse = new List<LoginResponse>();
                 loginResponse = await _jwtmiddleware.AuthenticateUser(LoginReq);
                 MethodResult<List<LoginResponse>> responseObject = new MethodResult<List<LoginResponse>>();

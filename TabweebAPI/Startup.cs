@@ -12,6 +12,10 @@ using System.Collections.Generic;
 using System.Data.Common;
 using System.Linq;
 using System.Threading.Tasks;
+using Microsoft.IdentityModel.Tokens;
+using Microsoft.AspNetCore.Authentication.JwtBearer;
+using System.Text;
+using Microsoft.Extensions.Options;
 
 namespace TabweebAPI
 {
@@ -46,13 +50,77 @@ namespace TabweebAPI
                     .AllowAnyHeader()
                     .AllowCredentials());
             });
+            //var SecretKey = new ConfigurationBuilder().AddJsonFile("appsettings.json").Build().GetSection("Jwt")["SecretKey"];
+            //var SymmetricSecurityKey = new SymmetricSecurityKey(Encoding.UTF8.GetBytes(SecretKey));
+
+            //services.AddAuthentication(auth =>
+            //{
+            //    auth.DefaultAuthenticateScheme = JwtBearerDefaults.AuthenticationScheme;
+            //    auth.DefaultChallengeScheme = JwtBearerDefaults.AuthenticationScheme;
+
+            //})
+
+            //.AddJwtBearer(token =>
+            //{
+            //    token.RequireHttpsMetadata = false;
+            //    token.SaveToken = true;
+            //    token.TokenValidationParameters = new TokenValidationParameters
+            //    {
+            //        ValidateIssuerSigningKey = true,
+            //        //IssuerSigningKey = new SymmetricSecurityKey(SecretKey),
+            //        ValidateIssuer = true,
+            //        //Usually this is your application base URL - JRozario
+            //        ValidIssuer = "http://localhost:7800/",
+            //        // ValidIssuer = "http://localhost:7800/",
+            //        ValidateAudience = true,
+            //        //Here we are creating and using JWT within the same application. In this case base URL is fine - JRozario
+            //        //If the JWT is created using a web service then this could be the consumer URL - JRozario
+            //        ValidAudience = "http://localhost:7800/",
+
+            //        IssuerSigningKey = SymmetricSecurityKey,
+            //    };
+            //});
+
             services.AddControllers();
 
             services.AddSwaggerGen(c =>
             {
                 c.SwaggerDoc("v1", new OpenApiInfo { Title = "TabweebAPI", Version = "v1" });
+                c.AddSecurityDefinition("Bearer", new OpenApiSecurityScheme()
+                {
+                    Name = "Authorization",
+                    Type = SecuritySchemeType.ApiKey,
+                    Scheme = "Bearer",
+                    BearerFormat = "JWT",
+                    In = ParameterLocation.Header,
+                    Description = "JWT Authorization header using the Bearer scheme. \r\n\r\n Enter 'Bearer' [space] and then your token in the text input below.\r\n\r\nExample: \"Bearer 1safsfsdfdfd\"",
+                });
+                c.AddSecurityRequirement(new OpenApiSecurityRequirement {
+                {
+                new OpenApiSecurityScheme {
+                Reference = new OpenApiReference {
+                    Type = ReferenceType.SecurityScheme,
+                        Id = "Bearer"
+                }
+               },
+                new string[] {}
+                }
+              });
             });
-         
+            services.AddAuthentication(JwtBearerDefaults.AuthenticationScheme)
+              .AddJwtBearer(options =>
+              {
+                  options.TokenValidationParameters = new TokenValidationParameters
+                  {
+                      ValidateIssuer = true,
+                      ValidateAudience = true,
+                      ValidateLifetime = true,
+                      ValidateIssuerSigningKey = true,
+                      ValidIssuer = Configuration["Jwt:Issuer"],
+                      ValidAudience = Configuration["Jwt:Issuer"],
+                      IssuerSigningKey = new SymmetricSecurityKey(Encoding.UTF8.GetBytes(Configuration["Jwt:SecretKey"]))
+                  };
+              });
         }
 
         // This method gets called by the runtime. Use this method to configure the HTTP request pipeline.
@@ -73,7 +141,7 @@ namespace TabweebAPI
 
             app.UseRouting();
             // app.UseCors("CorsApi");
-
+            app.UseAuthentication();
             app.UseAuthorization();
 
             app.UseCors(x => x

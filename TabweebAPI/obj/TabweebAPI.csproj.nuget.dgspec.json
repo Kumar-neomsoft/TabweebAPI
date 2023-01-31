@@ -1,17 +1,17 @@
 {
   "format": 1,
   "restore": {
-    "E:\\WORK\\2023\\TabweebAPI\\TabweebAPI\\TabweebAPI.csproj": {}
+    "E:\\WORK\\TabweebAPI\\TabweebAPI\\TabweebAPI.csproj": {}
   },
   "projects": {
-    "E:\\WORK\\2023\\TabweebAPI\\TabweebAPI\\TabweebAPI.csproj": {
+    "E:\\WORK\\TabweebAPI\\TabweebAPI\\TabweebAPI.csproj": {
       "version": "1.0.0",
       "restore": {
-        "projectUniqueName": "E:\\WORK\\2023\\TabweebAPI\\TabweebAPI\\TabweebAPI.csproj",
+        "projectUniqueName": "E:\\WORK\\TabweebAPI\\TabweebAPI\\TabweebAPI.csproj",
         "projectName": "TabweebAPI",
-        "projectPath": "E:\\WORK\\2023\\TabweebAPI\\TabweebAPI\\TabweebAPI.csproj",
+        "projectPath": "E:\\WORK\\TabweebAPI\\TabweebAPI\\TabweebAPI.csproj",
         "packagesPath": "C:\\Users\\Admin\\.nuget\\packages\\",
-        "outputPath": "E:\\WORK\\2023\\TabweebAPI\\TabweebAPI\\obj\\",
+        "outputPath": "E:\\WORK\\TabweebAPI\\TabweebAPI\\obj\\",
         "projectStyle": "PackageReference",
         "configFilePaths": [
           "C:\\Users\\Admin\\AppData\\Roaming\\NuGet\\NuGet.Config",
@@ -42,6 +42,10 @@
         "net6.0": {
           "targetAlias": "net6.0",
           "dependencies": {
+            "Microsoft.AspNetCore.Authentication.JwtBearer": {
+              "target": "Package",
+              "version": "[6.0.13, )"
+            },
             "Microsoft.Data.SqlClient": {
               "target": "Package",
               "version": "[5.1.0, )"

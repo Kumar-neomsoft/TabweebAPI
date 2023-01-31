@@ -25,7 +25,14 @@ namespace Tabweeb_Model
         public int BranchId { get; set; }
 
     }
-  
+    public class BillSource
+    {
+        public int LANG_NO { get; set; }
+        public int FORM_NO { get; set; }
+        public string FORM_NAME { get; set; }
+        public string FORM_NOTE { get; set; }
+
+    }
     public class InvoiceDetails
     {
         public decimal BILL_SER { get; set; }

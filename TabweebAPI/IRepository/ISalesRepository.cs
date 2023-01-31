@@ -11,6 +11,7 @@ namespace TabweebAPI.IRepository
 {
     interface ISalesRepository
     {
+        Task<MethodResult<List<BillSource>>> GetBillSource(int LangId);
         Task<MethodResult<List<BillType>>> GetBillType(int LangId,int DocType);
         Task<MethodResult<List<CCodeRes>>> GetCCode(int BranchId);
         Task<MethodResult<saveStatus>> InsertInvoice(string InvData, string InvItemData);

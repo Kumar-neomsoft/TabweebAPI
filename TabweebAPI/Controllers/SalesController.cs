@@ -50,6 +50,14 @@ namespace TabweebAPI.Controllers
         {
             try
             {
+                //Validate JWT token validation
+                var returnValue = _jwtmiddleware.ValidateJWTToken(HttpContext.Request.Headers.ToList());
+
+                if (returnValue.Equals("unauthorized"))
+                {
+                   // throw new JwtMiddleware.HttpException(401, "Unauthorized access");
+                    return  StatusCode(401);
+                }
                 //Get the result from repository
                 var Result = await _salesRepository.GetBillType(LangNo, DocType);
 
@@ -63,11 +71,40 @@ namespace TabweebAPI.Controllers
 
         }
 
+        [HttpGet("GetBillSource")]
+        public async Task<IActionResult> GetBillSource(int LangNo)
+        {
+            try
+            {
+                //Validate JWT token validation
+                //var returnValue = _jwtmiddleware.ValidateJWTToken(HttpContext.Request.Headers.ToList());
+
+                //if (returnValue.Equals("unauthorized"))
+                //{
+                //    // throw new JwtMiddleware.HttpException(401, "Unauthorized access");
+                //    return StatusCode(401);
+                //}
+                //Get the result from repository
+                var Result = await _salesRepository.GetBillSource(LangNo);
+
+                return _commonController.ProcessGetResponse<BillSource>(Result.ResultObject.ToList(), PageName, CRUDAction.Select);
+            }
+            catch (Exception ex)
+            {
+                _logger.Error($"Error occured inside GetBillSource Action: {ex.Message}");
+                return StatusCode(500, "Internal server error");
+            }
+
+        }
+
         [HttpGet("GetCCode")]
         public async Task<IActionResult> GetCCode(int BranchNo)
         {
             try
             {
+                //Validate JWT token validation
+                var returnValue = _jwtmiddleware.ValidateJWTToken(HttpContext.Request.Headers.ToList());
+
                 //Get the result from repository
                 var Result = await _salesRepository.GetCCode(BranchNo);
 
@@ -85,9 +122,10 @@ namespace TabweebAPI.Controllers
         {
             try
             {
+                //Validate JWT token validation
+                var returnValue = _jwtmiddleware.ValidateJWTToken(HttpContext.Request.Headers.ToList());
 
                 var Result = await _salesRepository.EditInvoice(BILL_GUID);
-
                 return _commonController.ProcessGetResponse<InvoiceDetails>(Result.ResultObject.ToList(), PageName, CRUDAction.Select);
             }
             catch (Exception ex)
@@ -102,6 +140,9 @@ namespace TabweebAPI.Controllers
         {
             try
             {
+                //Validate JWT token validation
+                var returnValue = _jwtmiddleware.ValidateJWTToken(HttpContext.Request.Headers.ToList());
+
                 if (invDetails == null)
                     return BadRequest("Invoice Details is null");
                 if (invDetails.InvoiceItemList.Count == 0)
