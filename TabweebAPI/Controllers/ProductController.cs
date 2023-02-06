@@ -21,28 +21,29 @@ namespace TabweebAPI.Controllers
 {
     [Route("api/[controller]")]
     [ApiController]
-    public class BranchController : CommonController
+    public class ProductController : CommonController
     {
         #region "Declarations"
-        private readonly IBranchRepository _branchRepository;
+        private readonly IProductRepository _productRepository;
         private readonly CommonRepository _commonRepository;
         private readonly CommonController _commonController;
-        private readonly string PageName = "Branch";
+        private readonly string PageName = "Product";
         private readonly JwtMiddleware _jwtmiddleware;
         private Logger _logger = LogManager.GetCurrentClassLogger();
         #endregion
 
         #region "Constructor"
-        public BranchController(IConfiguration iconfig)
+        public ProductController(IConfiguration iconfig)
         {
-            _branchRepository = new BranchRepository(iconfig);
+            _productRepository = new ProductRepository(iconfig);
             _commonController = new CommonController();
             _commonRepository = new CommonRepository();
             _jwtmiddleware = new JwtMiddleware(iconfig);
         }
         #endregion
-        [HttpGet("GetBranchById")]
-        public async Task<IActionResult> GetBranchById(Int32 CompanyId)
+
+        [HttpPost("SearchProduct")]
+        public async Task<IActionResult> SearchProduct([FromForm] ProductSearchReq obj)
         {
             try
             {
@@ -53,23 +54,24 @@ namespace TabweebAPI.Controllers
                 {
                     return StatusCode(401);
                 }
-
-                if (CompanyId == 0)
+                if (obj == null)
                 {
-                    return StatusCode(500, "CompanyId cannot be null");
+                    return StatusCode(500, "ProductSearch cannot be null");
                 }
-                var Result = await _branchRepository.GetBranchById(CompanyId);
+                var Result = await _productRepository.SearchProduct(obj);
 
-                return _commonController.ProcessGetResponse<BranchRes>(Result.ResultObject.ToList(), PageName, CRUDAction.Select);
+                return _commonController.ProcessGetResponse<ProductSearch>(Result.ResultObject.ToList(), PageName, CRUDAction.Select);
             }
             catch (Exception ex)
             {
-                _logger.Error($"Error occured inside GetBranchById Action: {ex.Message}");
+                _logger.Error($"Error occured inside SearchProduct Action: {ex.Message}");
                 return StatusCode(500, "Internal server error");
+
             }
         }
-        [HttpGet("GetBranch")]
-        public async Task<IActionResult> GetBranch()
+
+        [HttpGet("GetAllProduct")]
+        public async Task<IActionResult> GetAllProduct()
         {
             try
             {
@@ -80,14 +82,16 @@ namespace TabweebAPI.Controllers
                 {
                     return StatusCode(401);
                 }
-                var Result = await _branchRepository.GetBranch();
 
-                return _commonController.ProcessGetResponse<BranchRes>(Result.ResultObject.ToList(), PageName, CRUDAction.Select);
+                var Result = await _productRepository.GetAllProduct();
+
+                return _commonController.ProcessGetResponse<ProductSearch>(Result.ResultObject.ToList(), PageName, CRUDAction.Select);
             }
             catch (Exception ex)
             {
-                _logger.Error($"Error occured inside GetBranch Action: {ex.Message}");
+                _logger.Error($"Error occured inside GetAllProduct Action: {ex.Message}");
                 return StatusCode(500, "Internal server error");
+
             }
         }
     }

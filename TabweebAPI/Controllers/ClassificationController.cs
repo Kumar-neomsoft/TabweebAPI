@@ -15,6 +15,8 @@ using Microsoft.AspNetCore.Mvc.RazorPages;
 using Microsoft.Extensions.Logging;
 using TabweebAPI.DBHelper;
 using NLog;
+using TabweebAPI.Middleware;
+
 namespace TabweebAPI.Controllers
 {
     [Route("api/[controller]")]
@@ -26,6 +28,7 @@ namespace TabweebAPI.Controllers
         private readonly CommonRepository _commonRepository;
         private readonly CommonController _commonController;
         private readonly string PageName = "Classification";
+        private readonly JwtMiddleware _jwtmiddleware;
         private Logger _logger = LogManager.GetCurrentClassLogger();
         #endregion
 
@@ -35,6 +38,7 @@ namespace TabweebAPI.Controllers
             _classificationRepository = new ClassificationRepository(iconfig);
             _commonController = new CommonController();
             _commonRepository = new CommonRepository();
+            _jwtmiddleware = new JwtMiddleware(iconfig);
         }
         #endregion
         [HttpGet("GetARType")]
@@ -42,6 +46,13 @@ namespace TabweebAPI.Controllers
         {
             try
             {
+                //Validate JWT token validation
+                var returnValue = _jwtmiddleware.ValidateJWTToken(HttpContext.Request.Headers.ToList());
+
+                if (returnValue.Equals("unauthorized"))
+                {
+                    return StatusCode(401);
+                }
 
                 if (ArTypeNo == 0)
                 {

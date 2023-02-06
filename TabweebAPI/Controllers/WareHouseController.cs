@@ -46,6 +46,13 @@ namespace TabweebAPI.Controllers
         {
             try
             {
+                //Validate JWT token validation
+                var returnValue = _jwtmiddleware.ValidateJWTToken(HttpContext.Request.Headers.ToList());
+
+                if (returnValue.Equals("unauthorized"))
+                {
+                    return StatusCode(401);
+                }
                 //Get the result from repository
                 var Result = await _warehouseRepository.GetWareHouseDetails();
 
@@ -64,6 +71,13 @@ namespace TabweebAPI.Controllers
         {
             try
             {
+                //Validate JWT token validation
+                var returnValue = _jwtmiddleware.ValidateJWTToken(HttpContext.Request.Headers.ToList());
+
+                if (returnValue.Equals("unauthorized"))
+                {
+                    return StatusCode(401);
+                }
                 //Get the result from repository
                 var Result = await _warehouseRepository.GetWareHouseDetails(BranchNo);
 

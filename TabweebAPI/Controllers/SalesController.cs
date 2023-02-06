@@ -55,7 +55,6 @@ namespace TabweebAPI.Controllers
 
                 if (returnValue.Equals("unauthorized"))
                 {
-                   // throw new JwtMiddleware.HttpException(401, "Unauthorized access");
                     return  StatusCode(401);
                 }
                 //Get the result from repository
@@ -77,13 +76,12 @@ namespace TabweebAPI.Controllers
             try
             {
                 //Validate JWT token validation
-                //var returnValue = _jwtmiddleware.ValidateJWTToken(HttpContext.Request.Headers.ToList());
+                var returnValue = _jwtmiddleware.ValidateJWTToken(HttpContext.Request.Headers.ToList());
 
-                //if (returnValue.Equals("unauthorized"))
-                //{
-                //    // throw new JwtMiddleware.HttpException(401, "Unauthorized access");
-                //    return StatusCode(401);
-                //}
+                if (returnValue.Equals("unauthorized"))
+                {
+                    return StatusCode(401);
+                }
                 //Get the result from repository
                 var Result = await _salesRepository.GetBillSource(LangNo);
 
@@ -105,6 +103,11 @@ namespace TabweebAPI.Controllers
                 //Validate JWT token validation
                 var returnValue = _jwtmiddleware.ValidateJWTToken(HttpContext.Request.Headers.ToList());
 
+                if (returnValue.Equals("unauthorized"))
+                {
+                    return StatusCode(401);
+                }
+
                 //Get the result from repository
                 var Result = await _salesRepository.GetCCode(BranchNo);
 
@@ -117,6 +120,35 @@ namespace TabweebAPI.Controllers
             }
 
         }
+
+        [HttpPost("GetInvoice")]
+        public async Task<IActionResult> GetInvoiceList([FromForm] InvoiceReq Invobj)
+        {
+            try
+            {
+                ////Validate JWT token validation
+                //var returnValue = _jwtmiddleware.ValidateJWTToken(HttpContext.Request.Headers.ToList());
+
+                //if (returnValue.Equals("unauthorized"))
+                //{
+                //    return StatusCode(401);
+                //}
+                if (Invobj.LANG_NO == null)
+                {
+                    return StatusCode(500, "Language cannot be null");
+                }
+                var Result = await _salesRepository.GetInvoiceList(Invobj);
+
+                return _commonController.ProcessGetResponse<InvoiceRes>(Result.ResultObject.ToList(), PageName, CRUDAction.Select);
+            }
+            catch (Exception ex)
+            {
+                _logger.Error($"Error occured inside GetInvoiceList Action: {ex.Message}");
+                return StatusCode(500, "Internal server error");
+
+            }
+        }
+
         [HttpGet("EditInvoice")]
         public async Task<IActionResult> EditInvoice(Guid BILL_GUID)
         {
@@ -124,6 +156,11 @@ namespace TabweebAPI.Controllers
             {
                 //Validate JWT token validation
                 var returnValue = _jwtmiddleware.ValidateJWTToken(HttpContext.Request.Headers.ToList());
+
+                if (returnValue.Equals("unauthorized"))
+                {
+                    return StatusCode(401);
+                }
 
                 var Result = await _salesRepository.EditInvoice(BILL_GUID);
                 return _commonController.ProcessGetResponse<InvoiceDetails>(Result.ResultObject.ToList(), PageName, CRUDAction.Select);
@@ -142,6 +179,11 @@ namespace TabweebAPI.Controllers
             {
                 //Validate JWT token validation
                 var returnValue = _jwtmiddleware.ValidateJWTToken(HttpContext.Request.Headers.ToList());
+
+                if (returnValue.Equals("unauthorized"))
+                {
+                    return StatusCode(401);
+                }
 
                 if (invDetails == null)
                     return BadRequest("Invoice Details is null");

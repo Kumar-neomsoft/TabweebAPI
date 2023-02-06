@@ -16,5 +16,6 @@ namespace TabweebAPI.IRepository
         Task<MethodResult<List<CCodeRes>>> GetCCode(int BranchId);
         Task<MethodResult<saveStatus>> InsertInvoice(string InvData, string InvItemData);
         Task<MethodResult<List<InvoiceDetails>>> EditInvoice(Guid BILL_GUID);
+        Task<MethodResult<List<InvoiceRes>>> GetInvoiceList(InvoiceReq Invobj);
     }
 }

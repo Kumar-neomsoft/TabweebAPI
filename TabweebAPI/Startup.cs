@@ -50,36 +50,7 @@ namespace TabweebAPI
                     .AllowAnyHeader()
                     .AllowCredentials());
             });
-            //var SecretKey = new ConfigurationBuilder().AddJsonFile("appsettings.json").Build().GetSection("Jwt")["SecretKey"];
-            //var SymmetricSecurityKey = new SymmetricSecurityKey(Encoding.UTF8.GetBytes(SecretKey));
-
-            //services.AddAuthentication(auth =>
-            //{
-            //    auth.DefaultAuthenticateScheme = JwtBearerDefaults.AuthenticationScheme;
-            //    auth.DefaultChallengeScheme = JwtBearerDefaults.AuthenticationScheme;
-
-            //})
-
-            //.AddJwtBearer(token =>
-            //{
-            //    token.RequireHttpsMetadata = false;
-            //    token.SaveToken = true;
-            //    token.TokenValidationParameters = new TokenValidationParameters
-            //    {
-            //        ValidateIssuerSigningKey = true,
-            //        //IssuerSigningKey = new SymmetricSecurityKey(SecretKey),
-            //        ValidateIssuer = true,
-            //        //Usually this is your application base URL - JRozario
-            //        ValidIssuer = "http://localhost:7800/",
-            //        // ValidIssuer = "http://localhost:7800/",
-            //        ValidateAudience = true,
-            //        //Here we are creating and using JWT within the same application. In this case base URL is fine - JRozario
-            //        //If the JWT is created using a web service then this could be the consumer URL - JRozario
-            //        ValidAudience = "http://localhost:7800/",
-
-            //        IssuerSigningKey = SymmetricSecurityKey,
-            //    };
-            //});
+           
 
             services.AddControllers();
 

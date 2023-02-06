@@ -17,7 +17,29 @@ namespace Tabweeb_Model
         public int DocType { get; set; }
 
     }
-   
+    public class InvoiceReq
+    {
+        public int? LANG_NO { get; set; }
+        public string? BILL_GUID { get; set; }
+        public decimal? BILL_SER { get; set; }
+        public string? C_NAME { get; set; }
+        public decimal? BILL_NO { get; set; }
+        public int? BILL_DOC_TYPE { get; set; }
+    }
+
+    public class InvoiceRes
+    {
+        public decimal BILL_SER { get; set; }
+        public int? BILL_DOC_TYPE { get; set; }
+        public decimal BILL_NO { get; set; }
+        public string? A_DESC { get; set; }
+        public string? C_NAME { get; set; }
+        public double? VAT_AMT { get; set; }
+        public double? BILL_AMT { get; set; }
+        public double? DISC_AMT { get; set; }
+        public string? FLG_DESC { get; set; }
+      
+    }
     public class CCodeRes
     {
         public int CCode { get; set; }

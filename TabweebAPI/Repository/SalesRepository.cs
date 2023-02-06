@@ -65,7 +65,36 @@ namespace TabweebAPI.Repository
             }
             return ObjRes;
         }
-       
+        public async Task<MethodResult<List<InvoiceRes>>> GetInvoiceList(InvoiceReq Invobj)
+        {
+            MethodResult<List<InvoiceRes>> ObjRes = new MethodResult<List<InvoiceRes>>();
+            List<InvoiceRes> SPresponseObject = new List<InvoiceRes>();
+            try
+            {
+                var Result = "";
+                DataTable dt = new DataTable();
+                string sqlStr = "sp_InvoiceDetails";
+                List<DbParameter> dbParam = new List<DbParameter>();
+                dbParam.Add(new DbParameter("Mode", "Select", DbType.String));
+                dbParam.Add(new DbParameter("BILL_GUID", Invobj.BILL_GUID, DbType.String));
+                dbParam.Add(new DbParameter("BILL_SER", Invobj.BILL_SER, DbType.Decimal));
+                dbParam.Add(new DbParameter("C_NAME", Invobj.C_NAME, DbType.String));
+                dbParam.Add(new DbParameter("BILL_NO", Invobj.BILL_NO, DbType.Decimal));
+                dbParam.Add(new DbParameter("BILL_DOC_TYPE", Invobj.BILL_DOC_TYPE, DbType.Int32));
+                dbParam.Add(new DbParameter("LANG_NO", Invobj.LANG_NO, DbType.Int32));
+                dt = await _commonRepository.ExecuteDataTable(sqlStr, CommandType.StoredProcedure, dbParam);
+                Result = JsonConvert.SerializeObject(dt, Formatting.Indented);
+                SPresponseObject = JsonConvert.DeserializeObject<List<InvoiceRes>>(Result);
+                ObjRes.ResultObject = SPresponseObject;
+            }
+            catch (Exception ex)
+            {
+                _logger.Error("Exception message " + ex.Message);
+                _logger.Error("InnerException message " + ex.InnerException);
+                await _commonRepository.InsertUpdateErrorLog<List<saveStatus>>(ex, System.Reflection.MethodBase.GetCurrentMethod().DeclaringType.FullName);
+            }
+            return ObjRes;
+        }
         public async Task<MethodResult<List<CCodeRes>>> GetCCode(int BranchId)
         {
             MethodResult<List<CCodeRes>> ObjRes = new MethodResult<List<CCodeRes>>();

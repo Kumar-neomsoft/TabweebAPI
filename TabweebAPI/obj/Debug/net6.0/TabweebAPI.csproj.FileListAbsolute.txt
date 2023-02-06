@@ -1,3 +1,10 @@
+E:\WORK\TabweebAPI\TabweebAPI\obj\Debug\net6.0\TabweebAPI.csproj.AssemblyReference.cache
+E:\WORK\TabweebAPI\TabweebAPI\obj\Debug\net6.0\TabweebAPI.GeneratedMSBuildEditorConfig.editorconfig
+E:\WORK\TabweebAPI\TabweebAPI\obj\Debug\net6.0\TabweebAPI.AssemblyInfoInputs.cache
+E:\WORK\TabweebAPI\TabweebAPI\obj\Debug\net6.0\TabweebAPI.AssemblyInfo.cs
+E:\WORK\TabweebAPI\TabweebAPI\obj\Debug\net6.0\TabweebAPI.csproj.CoreCompileInputs.cache
+E:\WORK\TabweebAPI\TabweebAPI\obj\Debug\net6.0\TabweebAPI.MvcApplicationPartsAssemblyInfo.cs
+E:\WORK\TabweebAPI\TabweebAPI\obj\Debug\net6.0\TabweebAPI.MvcApplicationPartsAssemblyInfo.cache
 E:\WORK\TabweebAPI\TabweebAPI\bin\Debug\net6.0\appsettings.Development.json
 E:\WORK\TabweebAPI\TabweebAPI\bin\Debug\net6.0\appsettings.json
 E:\WORK\TabweebAPI\TabweebAPI\bin\Debug\net6.0\TabweebAPI.exe
@@ -55,13 +62,6 @@ E:\WORK\TabweebAPI\TabweebAPI\bin\Debug\net6.0\runtimes\win\lib\net6.0\System.Se
 E:\WORK\TabweebAPI\TabweebAPI\bin\Debug\net6.0\runtimes\win\lib\net6.0\System.Windows.Extensions.dll
 E:\WORK\TabweebAPI\TabweebAPI\bin\Debug\net6.0\Tabweeb_Model.dll
 E:\WORK\TabweebAPI\TabweebAPI\bin\Debug\net6.0\Tabweeb_Model.pdb
-E:\WORK\TabweebAPI\TabweebAPI\obj\Debug\net6.0\TabweebAPI.csproj.AssemblyReference.cache
-E:\WORK\TabweebAPI\TabweebAPI\obj\Debug\net6.0\TabweebAPI.GeneratedMSBuildEditorConfig.editorconfig
-E:\WORK\TabweebAPI\TabweebAPI\obj\Debug\net6.0\TabweebAPI.AssemblyInfoInputs.cache
-E:\WORK\TabweebAPI\TabweebAPI\obj\Debug\net6.0\TabweebAPI.AssemblyInfo.cs
-E:\WORK\TabweebAPI\TabweebAPI\obj\Debug\net6.0\TabweebAPI.csproj.CoreCompileInputs.cache
-E:\WORK\TabweebAPI\TabweebAPI\obj\Debug\net6.0\TabweebAPI.MvcApplicationPartsAssemblyInfo.cs
-E:\WORK\TabweebAPI\TabweebAPI\obj\Debug\net6.0\TabweebAPI.MvcApplicationPartsAssemblyInfo.cache
 E:\WORK\TabweebAPI\TabweebAPI\obj\Debug\net6.0\staticwebassets\msbuild.TabweebAPI.Microsoft.AspNetCore.StaticWebAssets.props
 E:\WORK\TabweebAPI\TabweebAPI\obj\Debug\net6.0\staticwebassets\msbuild.build.TabweebAPI.props
 E:\WORK\TabweebAPI\TabweebAPI\obj\Debug\net6.0\staticwebassets\msbuild.buildMultiTargeting.TabweebAPI.props
