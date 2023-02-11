@@ -8,10 +8,8 @@ using TabweebAPI.Common;
 using Microsoft.AspNetCore.Mvc;
 namespace TabweebAPI.IRepository
 {
-    public interface IProductRepository
+    public interface IPrivilegeRepository
     {
-        Task<MethodResult<List<ProductSearch>>> SearchProduct(ProductSearchReq obj);
-        Task<MethodResult<List<ProductGetRes>>> GetProductCode(ProductGetReq obj);
-        Task<MethodResult<List<ProductSearch>>> GetAllProduct();
+        Task<MethodResult<List<PrivilegeRes>>> GetPrivilege(PrivilegeReq obj);
     }
 }

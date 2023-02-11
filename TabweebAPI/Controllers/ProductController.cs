@@ -70,6 +70,34 @@ namespace TabweebAPI.Controllers
             }
         }
 
+        [HttpPost("GetProductCode")]
+        public async Task<IActionResult> GetProductCode([FromForm] ProductGetReq obj)
+        {
+            try
+            {
+                //Validate JWT token validation
+                //var returnValue = _jwtmiddleware.ValidateJWTToken(HttpContext.Request.Headers.ToList());
+
+                //if (returnValue.Equals("unauthorized"))
+                //{
+                //    return StatusCode(401);
+                //}
+                if (obj == null)
+                {
+                    return StatusCode(500, "ProductGetReq cannot be null");
+                }
+                var Result = await _productRepository.GetProductCode(obj);
+
+                return _commonController.ProcessGetResponse<ProductGetRes>(Result.ResultObject.ToList(), PageName, CRUDAction.Select);
+            }
+            catch (Exception ex)
+            {
+                _logger.Error($"Error occured inside GetProductCode Action: {ex.Message}");
+                return StatusCode(500, "Internal server error");
+
+            }
+        }
+
         [HttpGet("GetAllProduct")]
         public async Task<IActionResult> GetAllProduct()
         {
