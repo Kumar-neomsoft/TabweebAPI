@@ -127,12 +127,12 @@ namespace TabweebAPI.Controllers
             try
             {
                 ////Validate JWT token validation
-                //var returnValue = _jwtmiddleware.ValidateJWTToken(HttpContext.Request.Headers.ToList());
+                var returnValue = _jwtmiddleware.ValidateJWTToken(HttpContext.Request.Headers.ToList());
 
-                //if (returnValue.Equals("unauthorized"))
-                //{
-                //    return StatusCode(401);
-                //}
+                if (returnValue.Equals("unauthorized"))
+                {
+                    return StatusCode(401);
+                }
                 if (Invobj.LANG_NO == null)
                 {
                     return StatusCode(500, "Language cannot be null");

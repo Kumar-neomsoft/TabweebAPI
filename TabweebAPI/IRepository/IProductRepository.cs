@@ -13,5 +13,6 @@ namespace TabweebAPI.IRepository
         Task<MethodResult<List<ProductSearch>>> SearchProduct(ProductSearchReq obj);
         Task<MethodResult<List<ProductGetRes>>> GetProductCode(ProductGetReq obj);
         Task<MethodResult<List<ProductSearch>>> GetAllProduct();
+        Task<MethodResult<List<BarcodeGetRes>>> GetBarCode(BarcodeGetReq obj);
     }
 }

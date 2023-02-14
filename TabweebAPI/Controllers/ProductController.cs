@@ -76,12 +76,12 @@ namespace TabweebAPI.Controllers
             try
             {
                 //Validate JWT token validation
-                //var returnValue = _jwtmiddleware.ValidateJWTToken(HttpContext.Request.Headers.ToList());
+                var returnValue = _jwtmiddleware.ValidateJWTToken(HttpContext.Request.Headers.ToList());
 
-                //if (returnValue.Equals("unauthorized"))
-                //{
-                //    return StatusCode(401);
-                //}
+                if (returnValue.Equals("unauthorized"))
+                {
+                    return StatusCode(401);
+                }
                 if (obj == null)
                 {
                     return StatusCode(500, "ProductGetReq cannot be null");
@@ -93,6 +93,34 @@ namespace TabweebAPI.Controllers
             catch (Exception ex)
             {
                 _logger.Error($"Error occured inside GetProductCode Action: {ex.Message}");
+                return StatusCode(500, "Internal server error");
+
+            }
+        }
+
+        [HttpPost("GetBarCode")]
+        public async Task<IActionResult> GetBarCode([FromBody] BarcodeGetReq obj)
+        {
+            try
+            {
+                //Validate JWT token validation
+                var returnValue = _jwtmiddleware.ValidateJWTToken(HttpContext.Request.Headers.ToList());
+
+                if (returnValue.Equals("unauthorized"))
+                {
+                    return StatusCode(401);
+                }
+                if (obj == null)
+                {
+                    return StatusCode(500, "BarcodeGetReq cannot be null");
+                }
+                var Result = await _productRepository.GetBarCode(obj);
+
+                return _commonController.ProcessGetResponse<BarcodeGetRes>(Result.ResultObject.ToList(), PageName, CRUDAction.Select);
+            }
+            catch (Exception ex)
+            {
+                _logger.Error($"Error occured inside GetBarCode Action: {ex.Message}");
                 return StatusCode(500, "Internal server error");
 
             }

@@ -32,7 +32,7 @@ namespace TabweebAPI.Repository
         {
             _config = config;
             _commonRepository = new CommonRepository();
-            _dbconn = new ConfigurationBuilder().AddJsonFile("appsettings.json").Build().GetSection("ConnectionStrings")["DBSysConnection"];
+            _dbconn = new ConfigurationBuilder().AddJsonFile("appsettings.json").Build().GetSection("ConnectionStrings")["DBConnection"];
         }
         #endregion
 
@@ -79,6 +79,35 @@ namespace TabweebAPI.Repository
                 dt = await _commonRepository.ExecuteDataTable(sqlStr, CommandType.StoredProcedure, dbParam);
                 Result = JsonConvert.SerializeObject(dt, Formatting.Indented);
                 GPresponseObject = JsonConvert.DeserializeObject<List<ProductGetRes>>(Result);
+                ObjRes.ResultObject = GPresponseObject;
+            }
+            catch (Exception ex)
+            {
+                _logger.Error("Exception message " + ex.Message);
+                _logger.Error("InnerException message " + ex.InnerException);
+                await _commonRepository.InsertUpdateErrorLog<List<saveStatus>>(ex, System.Reflection.MethodBase.GetCurrentMethod().DeclaringType.FullName);
+            }
+            return ObjRes;
+        }
+
+        public async Task<MethodResult<List<BarcodeGetRes>>> GetBarCode(BarcodeGetReq objPro)
+        {
+            MethodResult<List<BarcodeGetRes>> ObjRes = new MethodResult<List<BarcodeGetRes>>();
+            List<BarcodeGetRes> GPresponseObject = new List<BarcodeGetRes>();
+            try
+            {
+                var Result = "";
+                DataTable dt = new DataTable();
+                string sqlStr = "sp_ProductDetails";
+                List<DbParameter> dbParam = new List<DbParameter>();
+                dbParam.Add(new DbParameter("Mode", "GetProBarCode", DbType.String));
+                dbParam.Add(new DbParameter("I_CODE", (String)objPro.I_CODE, DbType.String));
+                dbParam.Add(new DbParameter("ITM_UNT", (String?)objPro.ITM_UNT, DbType.String));
+                dbParam.Add(new DbParameter("RecordFrom", (Int32?)objPro.RecordFrom, DbType.Int32));
+                dbParam.Add(new DbParameter("RecordTo", (Int32?)objPro.RecordTo, DbType.Int32));
+                dt = await _commonRepository.ExecuteDataTable(sqlStr, CommandType.StoredProcedure, dbParam);
+                Result = JsonConvert.SerializeObject(dt, Formatting.Indented);
+                GPresponseObject = JsonConvert.DeserializeObject<List<BarcodeGetRes>>(Result);
                 ObjRes.ResultObject = GPresponseObject;
             }
             catch (Exception ex)

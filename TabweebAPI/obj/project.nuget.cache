@@ -1,11 +1,12 @@
 {
   "version": 2,
-  "dgSpecHash": "9NzMTAJDa6AmLZeCZ0pdBrbed5fwcoKOINqKjMcOeahIvfrdKq+Zi4LSSNe4Fnsh7O17/Q/7IW9KJX4G6gSTEg==",
+  "dgSpecHash": "3y8IM/IvDNVUh+81QDFoWT6WJbJ7aB30vC2VleiVK0NF1z37Rjs71WvtY35Wb4Y5xxG0rZoG7RhCsgCmCFVt7g==",
   "success": true,
   "projectFilePath": "E:\\WORK\\2023\\TabweebAPI\\TabweebAPI\\TabweebAPI.csproj",
   "expectedPackageFiles": [
     "C:\\Users\\Admin\\.nuget\\packages\\azure.core\\1.25.0\\azure.core.1.25.0.nupkg.sha512",
     "C:\\Users\\Admin\\.nuget\\packages\\azure.identity\\1.7.0\\azure.identity.1.7.0.nupkg.sha512",
+    "C:\\Users\\Admin\\.nuget\\packages\\dapper\\2.0.123\\dapper.2.0.123.nupkg.sha512",
     "C:\\Users\\Admin\\.nuget\\packages\\microsoft.aspnetcore.authentication.jwtbearer\\6.0.13\\microsoft.aspnetcore.authentication.jwtbearer.6.0.13.nupkg.sha512",
     "C:\\Users\\Admin\\.nuget\\packages\\microsoft.bcl.asyncinterfaces\\1.1.1\\microsoft.bcl.asyncinterfaces.1.1.1.nupkg.sha512",
     "C:\\Users\\Admin\\.nuget\\packages\\microsoft.csharp\\4.5.0\\microsoft.csharp.4.5.0.nupkg.sha512",

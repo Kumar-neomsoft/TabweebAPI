@@ -16,6 +16,7 @@ using TabweebAPI.DBHelper;
 using Microsoft.Extensions.Configuration;
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.Data.SqlClient;
+using Dapper;
 
 namespace TabweebAPI.Common
 {
@@ -100,6 +101,21 @@ namespace TabweebAPI.Common
             }
 
         }
+        public async Task<List<T>> GetList<T>(string query, DynamicParameters parms)
+        {
+            try
+            {
+                using IDbConnection connection = new SqlConnection(connStr);
+                var results = await connection.QueryAsync<T>(query, parms, commandType: CommandType.StoredProcedure);
+                return results.ToList();
+             
+            }
+            catch (Exception ex)
+            {
+                throw ex;
+            }
+        }
+      
         public async Task<DataTable> ExecuteDataTable(string conn, string query, CommandType cmdType, List<DbParameter> parameterlist = null)
         {
             try

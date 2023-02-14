@@ -53,6 +53,30 @@ namespace TabweebAPI.Common
             }
         }
         [NonAction]
+        public IActionResult ProcessGetRes<T>(List<T> result, string labelName, CRUDAction CRUDAction)
+        {
+            try
+            {
+                ResponseObject<T> objCommonResponse = new ResponseObject<T>();
+
+                if (result.Count > 0)
+                {
+                    objCommonResponse.Response = new CommonResponse<T>() { Message = labelName, Success = true, Details = result };
+                    return Ok(objCommonResponse);
+                }
+                else
+                {
+                    objCommonResponse.Response = new CommonResponse<T>() { Message = "Not Found", Success = false, Details = result };
+                    return NotFound(objCommonResponse);
+                }
+            }
+            catch (Exception ex)
+            {
+                throw ex;
+            }
+        }
+
+        [NonAction]
         public IActionResult ProcessResponse<T>(saveStatus result, string labelName, CRUDAction operationCURD)
         {
             try
@@ -133,11 +157,8 @@ namespace TabweebAPI.Common
         private string message;
         private string haslimitvalue;
         private List<T> details;
-        private T modeldetails;
-        //private List<PrevilagesGet> Previlagesdetails;
-        //private JArray data;
-        //private JArray header;
-        //private JObject jdata;
+       // private T modeldetails;
+ 
         private string button;
         //private string downloadFilePath;
         [JsonPropertyName("Success")]
@@ -147,12 +168,7 @@ namespace TabweebAPI.Common
             set { this.success = value; }
         }
 
-        //[JsonPropertyName("Button")]
-        //public string Button
-        //{
-        //    get { return this.button; }
-        //    set { this.button = value; }
-        //}
+        
 
         [JsonPropertyName("Message")]
         public string Message
@@ -160,12 +176,7 @@ namespace TabweebAPI.Common
             get { return this.message ?? string.Empty; }
             set { this.message = value; }
         }
-        //[JsonPropertyName("DownloadFilePath")]
-        //public string DownloadFilePath
-        //{
-        //    get { return this.downloadFilePath ?? string.Empty; }
-        //    set { this.downloadFilePath = value; }
-        //}
+       
 
         public bool HasLimit
         {
@@ -186,54 +197,22 @@ namespace TabweebAPI.Common
                 this.details = value;
             }
         }
-        [JsonProperty("ModelDetails", NullValueHandling = NullValueHandling.Ignore)]
-        [JsonPropertyName("ModelDetails")]
-        public T ModelDetails
-        {
-            // using accessors
-            get
-            {
-                return this.modeldetails;
-            }
-            set
-            {
-                this.modeldetails = value;
-            }
-        }
-
-        //public List<PrevilagesGet> PrevilagesDetails
+       // [JsonProperty("ModelDetails", NullValueHandling = NullValueHandling.Ignore)]
+       // [JsonPropertyName("ModelDetails")]
+        //public T ModelDetails
         //{
         //    // using accessors
         //    get
         //    {
-        //        return this.Previlagesdetails;
+        //        return this.modeldetails;
         //    }
         //    set
         //    {
-        //        this.Previlagesdetails = value;
+        //        this.modeldetails = value;
         //    }
         //}
 
        
-        //[JsonProperty("Data", NullValueHandling = NullValueHandling.Ignore)]
-        //[JsonPropertyName("Data")]
-        //public JArray Data
-        //{
-        //    get { return this.data; }
-        //    set { this.data = value; }
-        //}
-
-        //public JArray GridHeader
-        //{
-        //    get { return this.header; }
-        //    set { this.header = value; }
-        //}
-        //[JsonProperty("JData", NullValueHandling = NullValueHandling.Ignore)]
-        //public JObject JData
-        //{
-        //    get { return this.jdata; }
-        //    set { this.jdata = value; }
-        //}
     }
     [Serializable, DataContract(Name = "MethodResultOf{0}")]
     public class MethodResult<T>
