@@ -180,7 +180,7 @@ namespace TabweebAPI.Controllers
                 return StatusCode(500, "Internal server error");
             }
         }
-        [HttpGet("GetPurchaseOrdertemDetails")]
+        [HttpGet("GetPurchaseOrderItemDetails")]
         public async Task<IActionResult> GetPOItemDetails(Guid BILL_GUID)
         {
             try

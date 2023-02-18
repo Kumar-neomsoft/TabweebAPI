@@ -366,21 +366,29 @@ namespace TabweebAPI.Repository
             MethodResult<saveStatus> ObjRes = new MethodResult<saveStatus>();
             string sqlStr = "sp_PurchaseOrderDetails";
             List<DbParameter> dbParam = new List<DbParameter>();
+            if (_connection.State == ConnectionState.Closed)
+                _connection.Open();
+            using var _transaction = _connection.BeginTransaction();
             try
             {
                 dbParam.Add(new DbParameter("Mode", "DeletePO"));
                 dbParam.Add(new DbParameter("BILL_GUID", BILL_GUID, DbType.Guid));
-                //object POGuid = await _commonRepository.ExecuteScalar(sqlStr, CommandType.StoredProcedure, dbParam);
                 object POGuid = DbHelper.ExecuteScalar(sqlStr, CommandType.StoredProcedure, dbParam);
                 ObjRes.ResultObject = await _commonRepository.GetValue<saveStatus>(POGuid);
-
+                _transaction.Commit();
             }
             catch (Exception ex)
             {
+                _transaction.Rollback();
                 _logger.Error("Exception message " + ex.Message);
                 _logger.Error("InnerException message " + ex.InnerException);
                 await _commonRepository.InsertUpdateErrorLog<List<saveStatus>>(ex, System.Reflection.MethodBase.GetCurrentMethod().DeclaringType.FullName);
 
+            }
+            finally
+            {
+                if (_connection.State == ConnectionState.Open)
+                    _connection.Close();
             }
             return ObjRes;
         }

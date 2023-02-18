@@ -5,6 +5,8 @@ using System.Text;
 using System.Threading.Tasks;
 using System.ComponentModel.DataAnnotations;
 using Newtonsoft.Json;
+using System.ComponentModel;
+
 namespace Tabweeb_Model
 {
     public class ProductSearch
@@ -25,8 +27,10 @@ namespace Tabweeb_Model
     public class ProductGetReq
     {
         public string? I_CODE { get; set; }
-        public int? RecordFrom { get; set; }
-        public int? RecordTo { get; set; }
+        [DefaultValue(1)]
+        public int RecordFrom { get; set; }
+        [DefaultValue(10)]
+        public int RecordTo { get; set; }
     }
     public class ProductGetRes
     {
@@ -43,8 +47,10 @@ namespace Tabweeb_Model
         [Required(ErrorMessage = "Enter Product I_Code")]
         public string I_CODE { get; set; }
         public string? ITM_UNT { get; set; }
-        public int? RecordFrom { get; set; }
-        public int? RecordTo { get; set; }
+        [DefaultValue(1)]
+        public int RecordFrom { get; set; }
+        [DefaultValue(10)]
+        public int RecordTo { get; set; }
     }
     public class BarcodeGetRes
     {
