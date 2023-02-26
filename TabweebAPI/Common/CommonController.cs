@@ -52,6 +52,30 @@ namespace TabweebAPI.Common
                 throw ex;
             }
         }
+
+        [NonAction]
+        public IActionResult ProcessGetResponseBody<T>(List<T> result, string HasLimitResponse, CRUDAction CRUDAction)
+        {
+            try
+            {
+                ResponseObject<T> objCommonResponse = new ResponseObject<T>();
+
+                if (result.Count > 0)
+                {
+                   // objCommonResponse.Response = new CommonResponse<T>() { Details = result };
+                    return Ok(JsonConvert.SerializeObject(result, Formatting.Indented));
+                }
+                else
+                {
+                    objCommonResponse.Response = new CommonResponse<T>() { Message = "Not Found", Success = false, Details = result };
+                    return NotFound(objCommonResponse);
+                }
+            }
+            catch (Exception ex)
+            {
+                throw ex;
+            }
+        }
         [NonAction]
         public IActionResult ProcessGetRes<T>(List<T> result, string labelName, CRUDAction CRUDAction)
         {

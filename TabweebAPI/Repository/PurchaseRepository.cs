@@ -460,27 +460,19 @@ namespace TabweebAPI.Repository
         }
         public async Task<MethodResult<List<GetPOItemDetails>>> GetPOItemDetails(Guid BILL_GUID)
         {
-            //MethodResult<List<PurchaseOrderItemViewDetails>> ObjInvRes = new MethodResult<List<PurchaseOrderItemViewDetails>>();
-            //List<PurchaseOrderItemViewDetails>? Objres = new List<PurchaseOrderItemViewDetails>();
+            
             MethodResult<List<GetPOItemDetails>> responseObject = new MethodResult<List<GetPOItemDetails>>();
             try
             {
-                //var Result = "";
+              
                 DataTable dt = new DataTable();
                 string sqlStr = "sp_PurchaseOrderDetails";
-               DynamicParameters dbParam = new DynamicParameters();
+                DynamicParameters dbParam = new DynamicParameters();
                 dbParam.Add("@Mode", "ItemDetail", DbType.String);
                 dbParam.Add("@BILL_GUID", BILL_GUID, DbType.Guid);
-                //Result = await _commonRepository.GetList<PurchaseOrderItemViewDetails>(sqlStr, dbParam);
-               // responseObject.ResultObject = Result.ToList();
-
-
                 var Result = await _commonRepository.GetList<GetPOItemDetails>(sqlStr, dbParam);
                 responseObject.ResultObject = Result.ToList();
 
-                // Result = JsonConvert.SerializeObject(dt, Formatting.Indented);
-                //Objres = JsonConvert.DeserializeObject<List<PurchaseOrderItemViewDetails>>(Result);
-                //ObjInvRes.ResultObject = Objres;
             }
             catch (Exception ex)
             {

@@ -47,13 +47,13 @@ namespace TabweebAPI.Controllers
         {
             try
             {
-                //Validate JWT token validation
-                var returnValue = _jwtmiddleware.ValidateJWTToken(HttpContext.Request.Headers.ToList());
+                ////Validate JWT token validation
+                //var returnValue = _jwtmiddleware.ValidateJWTToken(HttpContext.Request.Headers.ToList());
 
-                if (returnValue.Equals("unauthorized"))
-                {
-                    return StatusCode(401);
-                }
+                //if (returnValue.Equals("unauthorized"))
+                //{
+                //    return StatusCode(401);
+                //}
                 if (obj == null)
                     return BadRequest("GetCustomer request cannot be null");
 

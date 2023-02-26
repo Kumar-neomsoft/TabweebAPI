@@ -187,7 +187,7 @@ namespace TabweebAPI.Controllers
                     return StatusCode(401);
                 }
                 if (obj == null)
-                    return BadRequest("SearchQuotation request cannot be null");
+                    return BadRequest("GetQuotation request cannot be null");
 
                 var Result = await _quotationRepository.GetQuotationDetails(obj);
                 return _commonController.ProcessGetRes<QuotationGetRes>(Result.ResultObject.ToList(), PageName, CRUDAction.Select);

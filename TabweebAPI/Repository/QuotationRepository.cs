@@ -38,7 +38,6 @@ namespace TabweebAPI.Repository
             _dbconn = new ConfigurationBuilder().AddJsonFile("appsettings.json").Build().GetSection("ConnectionStrings")["DBConnection"];
             _connection = new SqlConnection(_dbconn);
             _connection.Open();
-            //_transaction = _connection.BeginTransaction();
         }
         #endregion
 
@@ -308,6 +307,7 @@ namespace TabweebAPI.Repository
             MethodResult<List<ViewQuotationDetails>> responseObject = new MethodResult<List<ViewQuotationDetails>>();
             try
             {
+                //var Result = "";
                 DataTable dt = new DataTable();
                 string sqlStr = "sp_QuotationDetails";
                 DynamicParameters dbParam = new DynamicParameters();

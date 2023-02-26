@@ -65,6 +65,28 @@ namespace TabweebAPI.Controllers
            
         }
 
-        
+        [HttpPost("AuthenticateUser1")]
+        public async Task<IActionResult> AuthenticateUser1([FromBody] LoginRequest LoginReq)
+        {
+            try
+            {
+                if (!ModelState.IsValid)
+                {
+                    return BadRequest("Parameter is missing");
+                }
+                List<LoginResponse> loginResponse = new List<LoginResponse>();
+                loginResponse = await _jwtmiddleware.AuthenticateUser(LoginReq);
+                MethodResult<List<LoginResponse>> responseObject = new MethodResult<List<LoginResponse>>();
+                responseObject.ResultObject = loginResponse;
+                return _commonController.ProcessGetResponseBody<LoginResponse>(responseObject.ResultObject.ToList(), PageName, CRUDAction.Select);
+
+            }
+            catch (Exception ex)
+            {
+                _logger.Error($"Error occured inside AuthenticateUser Action: {ex.Message}");
+                return StatusCode(500, "Internal server error");
+            }
+
+        }
     }
 }
