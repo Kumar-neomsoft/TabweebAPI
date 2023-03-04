@@ -17,5 +17,6 @@ namespace TabweebAPI.IRepository
         public long UpdateLoginSession(int UserId, string token);
         public SessionResponse SessionResponse(int vUserID);
         public long RefreshLoginSession(int UserId);
+        public List<string> ValidateUser1(LoginRequest LoginReq);
     }
 }

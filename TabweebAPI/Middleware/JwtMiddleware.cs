@@ -105,6 +105,61 @@ namespace TabweebAPI.Middleware
 
             throw new NotImplementedException();
         }
+
+        public async Task<List<string>> AuthenticateUser1(LoginRequest LoginReq)
+        {
+
+            _Secretkey = new ConfigurationBuilder().AddJsonFile("appsettings.json").Build().GetSection("Jwt")["SecretKey"];
+            _issuer = new ConfigurationBuilder().AddJsonFile("appsettings.json").Build().GetSection("Jwt")["issuer"];
+            _audience = new ConfigurationBuilder().AddJsonFile("appsettings.json").Build().GetSection("Jwt")["audience"];
+            List<LoginResponse> loginResponse = new List<LoginResponse>();
+            loginResponse = _loginRepository.ValidateUser(LoginReq);
+
+            if (loginResponse == null)
+            {
+                return null;
+            }
+            if (loginResponse.Count == 0)
+            {
+                return null;
+            }
+            if (LoginReq.UserName == loginResponse[0].UserID.ToString())
+            {
+                var SecretKey = _Secretkey;
+                var SymmetricSecurityKey = new SymmetricSecurityKey(Encoding.UTF8.GetBytes(SecretKey));
+                var siginigcredentials = new SigningCredentials(SymmetricSecurityKey, SecurityAlgorithms.HmacSha256Signature);
+                var JWToken = new JwtSecurityToken(
+                   issuer: _issuer,
+                   audience: _audience,
+                   claims: GetUserClaims(loginResponse[0]),
+                   expires: new DateTimeOffset(DateTime.Now.AddMinutes(30)).DateTime,
+                   //Using HS256 Algorithm to encrypt Token - JRozario
+                   //signingCredentials: new SigningCredentials(new SymmetricSecurityKey(key), SecurityAlgorithms.HmacSha256Signature)
+                   signingCredentials: siginigcredentials
+               );
+                int UserID = (Int32)loginResponse[0].UserID;
+                var token = new JwtSecurityTokenHandler().WriteToken(JWToken);
+                //Token = token;
+                loginResponse[0].Token = Convert.ToString(token);
+                long UPresult = 0;
+                UPresult = _loginRepository.UpdateLoginSession(UserID, token);
+
+                //var list1 = ((IEnumerable)loginResponse).OfType<object>();
+                //List<string> strings = list1.Select(x => x.ToString()).ToList();
+
+                List<string> list = new List<string>();
+                list = loginResponse.Cast<string>().ToList();
+               // List<string> list = (string)loginResponse.ToList();
+                return list;
+            }
+            else
+            {
+                return null;
+            }
+
+
+            throw new NotImplementedException();
+        }
         public string ValidateJWTToken(List<KeyValuePair<string, StringValues>> name)
         {
             string vAccessToken = "";

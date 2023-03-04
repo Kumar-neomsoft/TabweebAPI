@@ -89,6 +89,24 @@ namespace TabweebAPI.Controllers
             }
 
         }
+       
+        [HttpGet("GetCompany1")]
+        public async Task<IActionResult> GetCompany1()
+        {
+            try
+            {
+                //Get the result from repository
+                var Result = await _masterRepository.GetCompany();
+
+                return _commonController.ProcessGetResponseBody1<Company>(Result.ResultObject.ToList(), PageName, CRUDAction.Select);
+            }
+            catch (Exception ex)
+            {
+                _logger.Error($"Error occured inside GetCompany1 Action: {ex.Message}");
+                return StatusCode(500, "Internal server error");
+            }
+
+        }
         [HttpGet("GetBranchById")]
         public async Task<IActionResult> GetBranchById(Int32 CompanyId)
         {

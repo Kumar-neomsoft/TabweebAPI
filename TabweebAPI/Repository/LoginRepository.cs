@@ -91,6 +91,34 @@ namespace TabweebAPI.Repository
             }
             return LresponseObject;
         }
+
+        public List<string> ValidateUser1(LoginRequest LoginReq)
+        {
+
+            List<string> LresponseObject = new List<string>();
+            try
+            {
+
+                DataTable dt = new DataTable();
+                string sqlStr = "sp_GetUsers";
+
+                List<DbParameter> dbParam = new List<DbParameter>();
+                dbParam.Add(new DbParameter("Mode", "Select", DbType.String));
+                dbParam.Add(new DbParameter("UserName", (String)LoginReq.UserName, DbType.String, 100));
+                dbParam.Add(new DbParameter("Password", (String)LoginReq.Password, DbType.String, 100));
+                dt = DbHelper.ExecuteDataTable(_dbconn, sqlStr, CommandType.StoredProcedure, dbParam);
+                var Result = JsonConvert.SerializeObject(dt, Formatting.Indented);
+                LresponseObject = JsonConvert.DeserializeObject<List<string>>(Result);
+                return LresponseObject;
+            }
+            catch (Exception ex)
+            {
+                _logger.Error("Exception message " + ex.Message);
+                _logger.Error("InnerException message " + ex.InnerException);
+                _commonRepository.InsertUpdateErrorLog<List<saveStatus>>(ex, System.Reflection.MethodBase.GetCurrentMethod().DeclaringType.FullName);
+            }
+            return LresponseObject;
+        }
         public long UpdateLoginSession(int UserId,string Token)
         {
             long result = 0;

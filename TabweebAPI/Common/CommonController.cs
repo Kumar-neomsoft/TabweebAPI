@@ -62,8 +62,9 @@ namespace TabweebAPI.Common
 
                 if (result.Count > 0)
                 {
-                   // objCommonResponse.Response = new CommonResponse<T>() { Details = result };
-                    return Ok(JsonConvert.SerializeObject(result, Formatting.Indented));
+                   
+                    //objCommonResponse.Response = new CommonResponseBody<T>() { Success = true, Details = result};
+                    return Ok(JsonConvert.SerializeObject( result, Formatting.Indented));
                 }
                 else
                 {
@@ -76,6 +77,35 @@ namespace TabweebAPI.Common
                 throw ex;
             }
         }
+        [NonAction]
+        public IActionResult ProcessGetResponseBody1<T>(List<T> result, string HasLimitResponse, CRUDAction CRUDAction)
+        {
+            try
+            {
+                ResponseObject<T> objCommonResponse = new ResponseObject<T>();
+
+                if (result.Count > 0)
+                {
+
+                    return Ok("{" + JsonConvert.SerializeObject(GetObjectArray(result), Formatting.Indented).Replace("[", "").Replace("]", "") +"}");
+                    //return Ok(JsonConvert.SerializeObject(result, Formatting.None));
+                }
+                else
+                {
+                    objCommonResponse.Response = new CommonResponse<T>() { Message = "Not Found", Success = false, Details = result };
+                    return NotFound(objCommonResponse);
+                }
+            }
+            catch (Exception ex)
+            {
+                throw ex;
+            }
+        }
+        public static IEnumerable<object> GetObjectArray<T>(IEnumerable<T> obj)
+        {
+            return obj.Select(o => o.GetType().GetProperties().Select(p => p.GetValue(o, null)));
+        }
+
         [NonAction]
         public IActionResult ProcessGetRes<T>(List<T> result, string labelName, CRUDAction CRUDAction)
         {
@@ -221,23 +251,44 @@ namespace TabweebAPI.Common
                 this.details = value;
             }
         }
-       // [JsonProperty("ModelDetails", NullValueHandling = NullValueHandling.Ignore)]
-       // [JsonPropertyName("ModelDetails")]
-        //public T ModelDetails
-        //{
-        //    // using accessors
-        //    get
-        //    {
-        //        return this.modeldetails;
-        //    }
-        //    set
-        //    {
-        //        this.modeldetails = value;
-        //    }
-        //}
+     
 
        
     }
+
+
+
+    [JsonObject(ItemNullValueHandling = NullValueHandling.Ignore)]
+    public class CommonResponseBody<T>
+    {
+        private bool success;
+        private List<T> details;
+        [JsonPropertyName("Success")]
+        public bool Success
+        {
+            get { return this.success; }
+            set { this.success = value; }
+        }
+
+        [JsonProperty("Details", NullValueHandling = NullValueHandling.Ignore)]
+        [JsonPropertyName("Details")]
+        public List<T> Details
+        {
+            // using accessors
+            get
+            {
+                return this.details;
+            }
+            set
+            {
+                this.details = value;
+            }
+        }
+
+    }
+
+
+
     [Serializable, DataContract(Name = "MethodResultOf{0}")]
     public class MethodResult<T>
     {
