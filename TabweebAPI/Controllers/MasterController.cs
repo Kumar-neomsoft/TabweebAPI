@@ -89,8 +89,7 @@ namespace TabweebAPI.Controllers
             }
 
         }
-       
-        [HttpGet("GetCompany1")]
+      [HttpGet("GetCompany1")]
         public async Task<IActionResult> GetCompany1()
         {
             try
@@ -98,7 +97,7 @@ namespace TabweebAPI.Controllers
                 //Get the result from repository
                 var Result = await _masterRepository.GetCompany();
 
-                return _commonController.ProcessGetResponseBody1<Company>(Result.ResultObject.ToList(), PageName, CRUDAction.Select);
+                return _commonController.ProcessGetResponseBody<Company>(Result.ResultObject.ToList(), PageName, CRUDAction.Select);
             }
             catch (Exception ex)
             {

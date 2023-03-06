@@ -85,7 +85,7 @@ namespace TabweebAPI.Controllers
             }
             catch (Exception ex)
             {
-                _logger.Error($"Error occured inside AuthenticateUser1 Action: {ex.Message}");
+                _logger.Error($"Error occured inside AuthenticateUser Action: {ex.Message}");
                 return StatusCode(500, "Internal server error");
             }
 
@@ -102,15 +102,24 @@ namespace TabweebAPI.Controllers
                 }
                 List<LoginResponse> loginResponse = new List<LoginResponse>();
                 loginResponse = await _jwtmiddleware.AuthenticateUser(LoginReq);
+
+                //string result = string.Join(", ", loginResponse).TrimEnd(',', ' ');
+
+                //string rst = string.Join(",", loginResponse.Select(x=>x.BranchID + " " + x.CompanyID + " " + x.GroupNo + " " + x.LangID + " " + x.LoginMethod + " " + x.Name + " " + x.Password + " " + x.Token));
+
+
+                //return new JsonResult(new {  rst });
+
                 MethodResult<List<LoginResponse>> responseObject = new MethodResult<List<LoginResponse>>();
                 responseObject.ResultObject = loginResponse;
+                //return new JsonResult(new { success = true, loginResponse });
                 return  _commonController.ProcessGetResponseBody1<LoginResponse>(responseObject.ResultObject.ToList(), PageName, CRUDAction.Select);
 
 
             }
             catch (Exception ex)
             {
-                _logger.Error($"Error occured inside AuthenticateUser2 Action: {ex.Message}");
+                _logger.Error($"Error occured inside AuthenticateUser Action: {ex.Message}");
                 return StatusCode(500, "Internal server error");
             }
 
