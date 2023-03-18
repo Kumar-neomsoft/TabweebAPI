@@ -17,6 +17,7 @@ using Microsoft.Extensions.Configuration;
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.Data.SqlClient;
 using Dapper;
+using System.Net.Mail;
 
 namespace TabweebAPI.Common
 {
@@ -186,6 +187,23 @@ namespace TabweebAPI.Common
             }
 
         }
+        public  string ToUrlSafeBase64String(string Base64String)
+        {
+            // avoid any slashes, plus signs or equal signs
+            // the following makes this base64 string url safe
+            //Base64String = Base64String.Replace("/", "_");
+            Base64String = Base64String.Replace("+", "-");
+            return Base64String;
+        }
+
+        public  string FromUrlSafeBase64String(string Base64String)
+        {
+            // add back any slashes, plus signs or equal signs
+            // the following makes this url safe string a base64 string
+            //Base64String = Base64String.Replace("_", "/");
+            Base64String = Base64String.Replace("-", "+");
+            return Base64String;
+        }
         public string Encrypt(string clearText)
         {
             string EncryptionKey = "MAKMNIV2SPBNIMNI992MNI12MNI";
@@ -230,9 +248,53 @@ namespace TabweebAPI.Common
             }
             return cipherText;
         }
-      
 
-      
+
+        public  bool SendMailContent(string Subject, string MailBody, string[] ToMail)
+        {
+            bool rtn = false;
+            try
+            {
+                string FromMail = new ConfigurationBuilder().AddJsonFile("appsettings.json").Build().GetSection("KeyValues")["FromMail"];
+                string Password = new ConfigurationBuilder().AddJsonFile("appsettings.json").Build().GetSection("KeyValues")["Password"];
+                string Smtpclient = new ConfigurationBuilder().AddJsonFile("appsettings.json").Build().GetSection("KeyValues")["smtp"];
+                string Url = new ConfigurationBuilder().AddJsonFile("appsettings.json").Build().GetSection("KeyValues")["ProjectURl"];
+                string Port = new ConfigurationBuilder().AddJsonFile("appsettings.json").Build().GetSection("KeyValues")["MailPort"];
+
+
+                MailMessage Mail = new MailMessage();
+                Mail.From = new MailAddress(FromMail);
+                foreach (string tomail in ToMail)
+                {
+                    Mail.To.Add(tomail);
+                }
+
+                Mail.Subject = Subject;
+                Mail.IsBodyHtml = true;
+                SmtpClient SmtpServer = new SmtpClient(Smtpclient);
+                SmtpServer.Port = Convert.ToInt32(Port);
+                SmtpServer.UseDefaultCredentials = false;
+                SmtpServer.Credentials = new System.Net.NetworkCredential(FromMail, Password);
+                string SSL = new ConfigurationBuilder().AddJsonFile("appsettings.json").Build().GetSection("KeyValues")["SSL"];
+                if (SSL.ToLower() == "true")
+                {
+                    SmtpServer.EnableSsl = true;
+                }
+                else
+                {
+                    SmtpServer.EnableSsl = false;
+                }
+                Mail.Body = MailBody;
+                SmtpServer.Send(Mail); 
+             
+                rtn = true;
+            }
+            catch (Exception)
+            {
+                rtn = false;
+            }
+            return rtn;
+        }
 
     }
 }

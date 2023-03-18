@@ -36,7 +36,8 @@ namespace Tabweeb_Model.Common
             CheckOut,
             Approved,
             Rejected,
-            LoggedOut
+            LoggedOut,
+            Notification
         }
         public static string Decrypt(string jsonData)
         {

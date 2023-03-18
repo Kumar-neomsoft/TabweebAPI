@@ -299,4 +299,46 @@ namespace Tabweeb_Model
 
 
     }
+
+    public class PreviewDataDetailModel
+    {
+        public string BILL_DOC_TYPE { get; set; }
+        public string? BILL_DATE { get; set; }
+        public double BILL_NO { get; set; }
+       // public double? BILL_RATE { get; set; }
+        public string? C_CODE { get; set; }
+        public string? C_NAME { get; set; }
+        public decimal? VAT_AMT { get; set; }
+        public decimal? BILL_AMT { get; set; }
+        public decimal? DISC_AMT { get; set; }
+       
+
+    }
+    public class PreviewDataDetailListModel
+    {
+
+        public string I_CODE { get; set; }
+
+        public double I_QTY { get; set; }
+        public string? ITM_UNT { get; set; }
+        public double? P_SIZE { get; set; }
+        public double? I_PRICE { get; set; }
+        public double? STK_COST { get; set; }
+        public int? W_CODE { get; set; }
+        public double? VAT_PER { get; set; }
+        public double? VAT_AMT { get; set; }
+        public double? DIS_PER { get; set; }
+        public double? DIS_AMT { get; set; }
+        public double? Total { get; set; }
+        public string? W_NAME { get; set; }
+        public string? I_NAME { get; set; }
+
+    }
+
+    public class QuotationMailSend
+    {
+        public Guid BILL_GUID { get; set; } = Guid.Empty;
+        public int LANG_NO { get; set; }
+        public string ToEmail { get; set; }
+    }
 }

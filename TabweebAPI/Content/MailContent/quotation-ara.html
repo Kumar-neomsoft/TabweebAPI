@@ -1,0 +1,102 @@
+﻿<!DOCTYPE html>
+<html>
+   <head>
+      <style>
+         table.custom-table {
+         font-family: arial, sans-serif;
+         border-collapse: collapse;
+         width: 100%;
+         }
+         td, th {
+         border: 1px solid #dddddd;
+         text-align: left;
+         padding: 8px;
+         }
+      </style>
+   </head>
+   <body style="font-family: arial, sans-serif;">
+       <div class="" style="border:1px solid #6CCEE6;border-radius:5px;width:600px;margin:0 auto; padding:15px;">
+           <p> Hi,  <span> {Fullname}</span> </p>
+
+           <h3> معلومات العميل </h3>
+           <h5> اسم الزبون  : <span> {Fullname}</span></h5>
+
+
+           <h3>
+               Quotation Details
+           </h3>
+           <h5> التاريخ  : <span> {BillDate}</span></h5>
+           <h5> نوع الفاتورة  : <span> {InvoiceType}</span></h5>
+           <h5> رقم العرض  : <span> {displaynumber}</span></h5>
+           <h5> رقم العميل  : <span> {CustomerNumber}</span></h5>
+           <h5> البيان  : <span> {Statement}</span></h5>
+
+           <h3> Quotation Details  </h3>
+           <p>
+              
+               <table id="TblStock_preview" class="custom-table">
+                   <thead>
+                       <tr>
+                           <th>رقم الصنف</th>
+                           <th> اسم الصنف</th>
+                           <th>المخزن</th>
+                           <th>الوحدة ا</th>
+                           <th> الكمية</th>
+                           <th> السعر</th>
+                           <th>الضريبة </th>
+                           <th>الخصم </th>
+                           <th>االجمالي</th>
+                       </tr>
+                   </thead>
+                   <tfoot id="tfoot">
+                   </tfoot>
+                   <tbody id="TblStockbody_preview">
+                       <tr>
+                           {trreplace}
+                       </tr>
+                       <tr>
+                           <th></th><th></th><th></th>
+                           <th></th><th></th><th></th><th></th>
+                                                      <th class="align-right">اإلجمالي</th>
+                           <th> <label for="lname" id="Custom_Add_Charges"> {TotalBill}</label></th>
+                       </tr>
+                       <tr>
+                           <th></th>
+                           <th></th>
+                           <th></th>
+                           <th></th>
+                           <th></th>
+                           <th></th><th></th>
+                          
+                                    <th class="align-right">جمالي الخصم</th>
+                           <th> <label for="lname" id="Custom_Add_Charges"> {Discount}</label></th>
+                       </tr>
+                       <tr>
+                           <th></th>
+                           <th></th>
+                           <th></th>
+                           <th></th>
+                           <th></th>
+                           <th></th><th></th>
+                          
+                                    <th class="align-right">اجمالي الضريبة</th>
+                           <th> <label for="lname" id="Custom_Add_Charges"> {Tax}</label></th>
+                       </tr>
+                     
+                   </tbody>
+               </table>
+           <p> &nbsp;</p>
+           <center>
+               <p> يرجى التأكيد أو القبول أو الرفض. </p>
+
+               <p style="font-family:lato; font-size:16px; line-height:22px;color:#646C77">{link_accept}</p>
+               <p style="font-family:lato; font-size:16px; line-height:22px;color:#646C77">{link_reject}</p>
+           </center>
+           <p> &nbsp;</p>
+           <p> Thanks, </p>
+           <p style="margin:5px 0"> {CLIENTCOMPANYNAME}, </p>
+           <p style="margin:5px 0">  {CLIENTEMAILID}, </p>
+           <p style="margin:5px 0">  {CLIENTECONTACTNUMBER}. </p>
+       </div>
+   </body>
+</html>

@@ -148,7 +148,11 @@ namespace TabweebAPI.Common
                         objCommonResponseBO.Response = new CommonResponse<T>() { Message = labelName + " Created Successfully", Success = true };
                         return Ok(objCommonResponseBO);
                     }
-                  
+                    else if ((int)saveStatus.success == Value.ErrorID && operationCURD == CRUDAction.Notification)
+                    {
+                        objCommonResponseBO.Response = new CommonResponse<T>() { Message =  "Mail Send Successfully", Success = true };
+                        return Ok(objCommonResponseBO);
+                    }
                     /****************************Response Messages - End*********************************/
                     else if ((int)saveStatus.success == Value.ErrorID && operationCURD == CRUDAction.Insert)
                     {

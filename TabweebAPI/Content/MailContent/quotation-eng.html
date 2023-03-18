@@ -1,0 +1,103 @@
+﻿<!DOCTYPE html>
+<html>
+   <head>
+      <style>
+         table.custom-table {
+         font-family: arial, sans-serif;
+         border-collapse: collapse;
+         width: 100%;
+         }
+         td, th {
+         border: 1px solid #dddddd;
+         text-align: left;
+         padding: 8px;
+         }
+      </style>
+   </head>
+   <body style="font-family: arial, sans-serif;">
+       <div class="" style="border:1px solid #6CCEE6;border-radius:5px;width:600px;margin:0 auto; padding:15px;">
+           <p> Hi,  <span> {Fullname}</span> </p>
+
+           <h3> Customer Info </h3>
+           <h5> Customer Name  : <span> {Fullname}</span></h5>
+
+
+           <h3>
+               Quotation Details
+           </h3>
+           <h5> Bill Date : <span> {BillDate}</span></h5>
+           <h5> invoice Type  : <span> {InvoiceType}</span></h5>
+           <h5> Display Number  : <span> {displaynumber}</span></h5>
+           <h5> Customer Number  : <span> {CustomerNumber}</span></h5>
+           <h5> Statement  : <span> {Statement}</span></h5>
+
+           <h3> Quotation Details  </h3>
+           <p>
+               <!--QuotationId : <span> {QuotationId}</span>-->
+               <table id="TblStock_preview" class="custom-table">
+                   <thead>
+                       <tr>
+                           <th> Item No</th>
+                           <th>Product Name</th>
+                           <th>The store</th>
+                           <th> Unit</th>
+                           <th> Quantity</th>
+                           <th> Price</th>
+                           <th>Tax </th>
+                           <th>Discount </th>
+                           <th>Total</th>
+                         
+                       </tr>
+                   </thead>
+                   <tfoot id="tfoot">
+                   </tfoot>
+                   <tbody id="TblStockbody_preview">
+                       <tr>
+                           {trreplace}
+                       </tr>
+                       <tr>
+                           <th></th><th></th><th></th>
+                           <th></th><th></th><th></th><th></th>
+                                                      <th class="align-right">Total Bill</th>
+                           <th> <label for="lname" id="Custom_Add_Charges"> {TotalBill}</label></th>
+                       </tr>
+                       <tr>
+                           <th></th>
+                           <th></th>
+                           <th></th>
+                           <th></th>
+                           <th></th>
+                           <th></th><th></th>
+                          
+                                    <th class="align-right"> Discount</th>
+                           <th> <label for="lname" id="Custom_Add_Charges"> {Discount}</label></th>
+                       </tr>
+                       <tr>
+                           <th></th>
+                           <th></th>
+                           <th></th>
+                           <th></th>
+                           <th></th>
+                           <th></th><th></th>
+                          
+                                    <th class="align-right"> Tax</th>
+                           <th> <label for="lname" id="Custom_Add_Charges"> {Tax}</label></th>
+                       </tr>
+                     
+                   </tbody>
+               </table>
+           <p> &nbsp;</p>
+           <center>
+               <p> Please confirm, Accept or Reject. </p>
+
+               <p style="font-family:lato; font-size:16px; line-height:22px;color:#646C77">{link_accept}</p>
+               <p style="font-family:lato; font-size:16px; line-height:22px;color:#646C77">{link_reject}</p>
+           </center>
+           <p> &nbsp;</p>
+           <p> Thanks, </p>
+           <p style="margin:5px 0"> {CLIENTCOMPANYNAME}, </p>
+           <p style="margin:5px 0">  {CLIENTEMAILID}, </p>
+           <p style="margin:5px 0">  {CLIENTECONTACTNUMBER}. </p>
+       </div>
+   </body>
+</html>
