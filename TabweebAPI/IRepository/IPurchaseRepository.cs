@@ -11,6 +11,7 @@ namespace TabweebAPI.IRepository
     public interface IPurchaseRepository
     {
         Task<MethodResult<List<VendorRes>>> GetVendor(VendorReq obj);
+        Task<MethodResult<List<AllVendorRes>>> GetAllVendor();
         Task<MethodResult<List<CashBankRes>>> GetCashBankNo(CashBankReq obj);
         //Task<MethodResult<saveStatus>> InsertPurchaseOrder(string PODetails, string POItemData);
         Task<MethodResult<List<PurchaseOrderViewDetails>>> EditPurchaseOrder(Guid BILL_GUID);

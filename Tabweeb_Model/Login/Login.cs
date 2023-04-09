@@ -40,6 +40,11 @@ namespace Tabweeb_Model
         public int LangID { get; set; }
         public string Token { get; set; }
     }
+
+    public class TokenResponse
+    {
+        public string Token { get; set; }
+    }
     public class SessionResponse
     {
         public int UserId { get; set; }

@@ -103,13 +103,6 @@ namespace TabweebAPI.Controllers
                 List<LoginResponse> loginResponse = new List<LoginResponse>();
                 loginResponse = await _jwtmiddleware.AuthenticateUser(LoginReq);
 
-                //string result = string.Join(", ", loginResponse).TrimEnd(',', ' ');
-
-                //string rst = string.Join(",", loginResponse.Select(x=>x.BranchID + " " + x.CompanyID + " " + x.GroupNo + " " + x.LangID + " " + x.LoginMethod + " " + x.Name + " " + x.Password + " " + x.Token));
-
-
-                //return new JsonResult(new {  rst });
-
                 MethodResult<List<LoginResponse>> responseObject = new MethodResult<List<LoginResponse>>();
                 responseObject.ResultObject = loginResponse;
                 //return new JsonResult(new { success = true, loginResponse });
@@ -120,6 +113,28 @@ namespace TabweebAPI.Controllers
             catch (Exception ex)
             {
                 _logger.Error($"Error occured inside AuthenticateUser Action: {ex.Message}");
+                return StatusCode(500, "Internal server error");
+            }
+
+        }
+
+        [HttpPost("GetToken")]
+        public async Task<IActionResult> GetToken([FromBody] LoginRequest LoginReq)
+        {
+            try
+            {
+                if (!ModelState.IsValid)
+                {
+                    return BadRequest("Parameter is missing");
+                }
+                List<LoginResponse> loginResponse = new List<LoginResponse>();
+                loginResponse = await _jwtmiddleware.AuthenticateUser(LoginReq);
+                return new JsonResult(new {  loginResponse[0].Token });
+
+            }
+            catch (Exception ex)
+            {
+                _logger.Error($"Error occured inside GetToken Action: {ex.Message}");
                 return StatusCode(500, "Internal server error");
             }
 

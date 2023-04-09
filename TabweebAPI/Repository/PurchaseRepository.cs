@@ -77,7 +77,30 @@ namespace TabweebAPI.Repository
             }
             return ObjRes;
         }
-
+        public async Task<MethodResult<List<AllVendorRes>>> GetAllVendor()
+        {
+            MethodResult<List<AllVendorRes>> ObjRes = new MethodResult<List<AllVendorRes>>();
+            List<AllVendorRes> SPresponseObject = new List<AllVendorRes>();
+            try
+            {
+                var Result = "";
+                DataTable dt = new DataTable();
+                string sqlStr = "sp_VendorDetails";
+                List<DbParameter> dbParam = new List<DbParameter>();
+                dbParam.Add(new DbParameter("Mode", "GetAllVendor", DbType.String));
+                dt = await _commonRepository.ExecuteDataTable(sqlStr, CommandType.StoredProcedure, dbParam);
+                Result = JsonConvert.SerializeObject(dt, Formatting.Indented);
+                SPresponseObject = JsonConvert.DeserializeObject<List<AllVendorRes>>(Result);
+                ObjRes.ResultObject = SPresponseObject;
+            }
+            catch (Exception ex)
+            {
+                _logger.Error("Exception message " + ex.Message);
+                _logger.Error("InnerException message " + ex.InnerException);
+                await _commonRepository.InsertUpdateErrorLog<List<saveStatus>>(ex, System.Reflection.MethodBase.GetCurrentMethod().DeclaringType.FullName);
+            }
+            return ObjRes;
+        }
         public async Task<MethodResult<List<CashBankRes>>> GetCashBankNo(CashBankReq objPro)
         {
             MethodResult<List<CashBankRes>> ObjRes = new MethodResult<List<CashBankRes>>();

@@ -27,6 +27,13 @@ namespace Tabweeb_Model
         public string V_A_CODE { get; set; }
         public int TotalRowCount { get; set; }
     }
+
+    public class AllVendorRes
+    {
+        public string V_CODE { get; set; }
+        public string V_A_NAME { get; set; }
+        public string V_A_CODE { get; set; }
+    }
     public class CashBankReq
     {
         public int? CASH_TYPE_SAVE { get; set; }

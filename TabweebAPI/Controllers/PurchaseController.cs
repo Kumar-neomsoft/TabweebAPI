@@ -69,6 +69,30 @@ namespace TabweebAPI.Controllers
 
             }
         }
+        [HttpPost("GetAllVendor")]
+        public async Task<IActionResult> GetAllVendor()
+        {
+            try
+            {
+                ////Validate JWT token validation
+                var returnValue = _jwtmiddleware.ValidateJWTToken(HttpContext.Request.Headers.ToList());
+
+                if (returnValue.Equals("unauthorized"))
+                {
+                    return StatusCode(401);
+                }
+               
+                var Result = await _purchaseRepository.GetAllVendor();
+
+                return _commonController.ProcessGetResponse<AllVendorRes>(Result.ResultObject.ToList(), PageName, CRUDAction.Select);
+            }
+            catch (Exception ex)
+            {
+                _logger.Error($"Error occured inside GetAllVendor Action: {ex.Message}");
+                return StatusCode(500, "Internal server error");
+
+            }
+        }
         [HttpPost("GetCashBankNo")]
         public async Task<IActionResult> GetCashBankNo([FromForm] CashBankReq obj)
         {
